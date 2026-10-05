@@ -1,0 +1,16 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "c7859aa8-b014-4074-9fcd-2a9a32be332f")
+	(paper "A4")
+	(title_block
+		(title "Power & USB")
+		(date "2026-10-05")
+		(rev "v0.1")
+		(company "SSS-Defence")
+		(comment 1 "CERN-OHL-P-2.0")
+		(comment 2 "https://github.com/Majorwhiskey/gps-lora")
+	)
+	(lib_symbols)
+)
