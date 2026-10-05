@@ -1,0 +1,33 @@
+# KiCad backups and autosaves
+*-backups/
+_autosave-*
+\#auto_saved_files\#
+*.bak
+*.kicad_sch-bak
+*.kicad_pcb-bak
+*.sch-bak
+
+# KiCad lock files and caches
+*.lck
+~*.lck
+fp-info-cache
+*.kicad_prl
+
+# Local exports (release outputs go in production/ and are committed)
+*.zip
+!production/**/*.zip
+hardware/plot/
+hardware/gerbers/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*~
+.vscode/
+.idea/
+
+# Vendor datasheets: keep locally, do not redistribute
+docs/datasheets/*.pdf
+docs/datasheets/*.jpeg
+docs/datasheets/*.jpg
+docs/datasheets/*.png
