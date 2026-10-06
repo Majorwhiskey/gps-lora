@@ -8,7 +8,6 @@
 		(title "Power & USB")
 		(date "2026-10-05")
 		(rev "v0.1")
-		(company "SSS-Defence")
 		(comment 1 "CERN-OHL-P-2.0")
 		(comment 2 "https://github.com/Majorwhiskey/gps-lora")
 	)
@@ -6664,7 +6663,7 @@
 				)
 			)
 		)
-		(property "Value" "750mA"
+		(property "Value" "0.75A PTC"
 			(at 91.44 77.47 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7663,7 +7662,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "5V TVS"
+		(property "Value" "SMF5.0A"
 			(at 91.44 93.9799 90)
 			(show_name no)
 			(do_not_autoplace no)

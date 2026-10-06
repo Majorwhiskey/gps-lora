@@ -1,0 +1,16 @@
+(version 1)
+
+# GNSS rules from u-blox SAM-M10Q integration manual (UBX-22020019) sec. 4.3.1.1 / 4.4.
+# Rule areas GNSS_clear (module + 10 mm) and GNSS_zone (module + 20 mm) are drawn on the board.
+
+(rule "GNSS: only its own parts within 10 mm"
+	(condition "A.Type == 'Footprint' && A.intersectsArea('GNSS_clear') && A.Reference != 'U401' && A.Reference != 'C401' && A.Reference != 'C402'")
+	(constraint disallow footprint))
+
+(rule "GNSS: no signal layer changes within 20 mm (GND stitching allowed)"
+	(condition "A.Type == 'Via' && A.NetName != 'GND' && A.intersectsArea('GNSS_zone')")
+	(constraint disallow via))
+
+(rule "GNSS: no traces under the module on inner or bottom layers"
+	(condition "A.Type == 'Track' && A.Layer != 'F.Cu' && A.intersectsCourtyard('U401')")
+	(constraint disallow track))

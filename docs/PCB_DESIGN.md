@@ -45,6 +45,32 @@ A chip-down GNSS (MAX-M10S plus a discrete patch) was considered and rejected
 for v1: it adds a 50 ohm feed and patch ground-plane design for no functional
 gain over the SAM-M10Q.
 
+## Selected parts
+
+Parts whose exact type matters. Generic passives (resistors, MLCCs) are chosen
+at BOM stage from stocked equivalents.
+
+| Ref | Function | Part | Notes |
+|---|---|---|---|
+| U301 | MCU module | Espressif ESP32-S3-WROOM-1-N8 | |
+| U202 | 3.3V LDO | Diodes AP7361C-33E-13 | SOT-223, E package pinout only |
+| U501 | OLED VBAT LDO | TI TLV75801PDBV | Adjustable, set to 3.795V by 59k/10k (VFB = 0.55V) |
+| U201 | USB ESD | ST USBLC6-2SC6 | |
+| U401 | GNSS | u-blox SAM-M10Q | Pin-compatible with SAM-M8Q; stock SAM-M8Q symbol and footprint used |
+| U402 | LoRa | HopeRF RFM95W-868S2 | No substitution |
+| U302 | EN supervisor (DNP) | Microchip MCP120T-300I/TT | Open-drain, 3.0V ±75mV, 350ms reset hold |
+| J201 | USB-C | HRO TYPE-C-31-M-12 | 16-pin USB 2.0 |
+| J401 | Antenna | Hirose U.FL-R-SMT-1 | |
+| J501 | microSD | Hirose DM3AT-SF-PEJM5 | Push-push |
+| J502 | OLED FPC | Hirose FH12-30S-0.5SH(55) | Bottom contact, 0.5mm pitch |
+| — | OLED panel | EastRising ER-OLED0.96-1.1W | Bought separately, fitted at final assembly |
+| F201 | Polyfuse | Littelfuse 1206L075THYR | 0.75A hold, 1.5A trip, 8V. The 1206L075SLYR is only 6V |
+| D201 | VBUS TVS | Littelfuse SMF5.0A | Uni, 5V standoff, 6.4V min breakdown, 9.2V clamp, SOD-123FL |
+| D202 | Holdup diode (DNP) | Schottky, SMA | Select with holdup option |
+| D401 | GNSS backup diode (DNP) | BAT54 class, SOD-323 | |
+| C403 | GNSS backup (DNP) | Elna DSK-3R3H224U-HL | 0.22F 3.3V. **Rated -10 to +60°C only**; needs a project footprint |
+| SW301-303 | Buttons | C&K PTS810 SJM 250 SMTR LFS | Top actuated, 4.2 x 3.2mm |
+
 ## Why the S3
 
 Native USB on GPIO19/20 removes the USB-UART bridge, its crystal, and the
@@ -59,32 +85,38 @@ Cost: pin assignments do not port from classic ESP32. Libraries and logic do.
 |---|---|---|---|
 | 17 | GNSS RXD (ESP32 TX) | UART1 | 100 ohm series resistor |
 | 18 | GNSS TXD (ESP32 RX) | UART1 | 100 ohm series resistor |
-| 47 | GNSS TIMEPULSE (PPS) | input | Glitch-free pin, see GNSS section |
+| 15 | GNSS TIMEPULSE (PPS) | input | Glitch-free pin, see GNSS section |
 | 7 | GNSS RESET_N | open drain | Last-resort recovery only |
 | 8 | OLED SDA | I2C | |
 | 9 | OLED SCL | I2C | |
 | 41 | OLED RES# | | 10k pull-up |
 | 10 | SD CS | SPI2 (IO_MUX FSPICS0) | |
 | 11 | SD MOSI | SPI2 (IO_MUX FSPID) | |
-| 12 | SD SCK | SPI2 (IO_MUX FSPICLK) | Clock filter footprint |
+| 12 | SD SCK | SPI2 (IO_MUX FSPICLK) | Direct, see EMC provisions |
 | 13 | SD MISO | SPI2 (IO_MUX FSPIQ) | |
 | 14 | LoRa NSS | SPI3 | |
-| 15 | LoRa MOSI | SPI3 | |
-| 16 | LoRa SCK | SPI3 | Clock filter footprint |
+| 47 | LoRa MOSI | SPI3 | |
+| 16 | LoRa SCK | SPI3 | Direct, see EMC provisions |
 | 21 | LoRa MISO | SPI3 | |
-| 38 | LoRa RESET | | Drive low or high-Z only |
-| 48 | LoRa DIO0 | interrupt | |
+| 48 | LoRa RESET | | Drive low or high-Z only |
+| 1 | LoRa DIO0 | interrupt | |
 | 42 | LoRa DIO1 | interrupt | RX timeout, needed for LoRaWAN stacks |
 | 4 | Eject button, to GND | | |
 | 2 | Status LED | | |
 | 5 | VBUS sense | | Holdup option, see power-loss handling |
 
-Spare: 1, 6.
+Spare: 6, 38.
+
+Pin choice follows the board layout: the four LoRa lines that reach the module's
+left edge (NSS, MISO, MOSI, RESET on pins 22-25) are ordered to match the
+routing channel beside the module, and DIO0/DIO1 use bottom-edge pins. Changed
+during layout (rev v0.1): PPS 47→15, LoRa MOSI 15→47, LoRa RESET 38→48,
+LoRa DIO0 48→1.
 
 Do not use: 39, 40. In USB-OTG download mode the S3 drives GPIO39 (MTCK) low
 and GPIO40 (MTDO) high (HDG Table 12), which would fight any device output
-connected to them. GPIO38 is also driven low in that mode; that only holds the
-LoRa radio in reset, which is harmless. Burning
+connected to them. GPIO38 is also driven low in that mode; it is left unused.
+LoRa RESET is on GPIO48, which download mode does not drive. Burning
 `EFUSE_DIS_USB_OTG_DOWNLOAD_MODE` would remove the behaviour entirely, but the
 pin assignment above makes it unnecessary.
 
@@ -92,7 +124,8 @@ SD on GPIO10-13 uses the SPI2 IO_MUX pins directly, bypassing the GPIO matrix,
 which allows the full 80MHz SPI clock if a card supports it (S3, SPI2).
 
 All assigned pins are brought out on WROOM-1 module pins (WROOM Table 3-1).
-GPIO47/48 run at 3.3V on the N8; only R16V variants put them at 1.8V.
+GPIO47/48 (LoRa MOSI, LoRa RESET) run at 3.3V on the N8; only R16V variants
+put them at 1.8V.
 
 ### Power-up glitches
 
@@ -100,7 +133,9 @@ GPIO1-14 and GPIO17 output a ~60us low pulse during chip power-up, and GPIO18
 outputs both a low and a high pulse (S3 Table 2-2). Consequences:
 
 - GNSS TIMEPULSE cannot be on any of these pins (see GNSS section). It is on
-  GPIO47, which has no glitch.
+  GPIO15, which has no glitch.
+- GPIO1 (LoRa DIO0) glitches low at power-up. DIO0 is an input to the ESP32
+  and the radio is idle at that time, so this is harmless.
 - GPIO7 (GNSS RESET_N): the 60us pulse is far shorter than the 1ms minimum
   reset pulse, so it does not reset the receiver.
 - GPIO18: the glitch briefly drives against the GNSS TXD output. The 100 ohm
@@ -276,7 +311,7 @@ This matters only for USB-IF certification, which is not a goal for this board.
 | 1, 4, 5, 6, 10, 11, 15, 16, 20 | GND | Ground, with vias |
 | 2 | V_IO | 3V3, tied to VCC |
 | 3 | V_BCKP | Open in v1; backup network footprint, see below |
-| 7 | TIMEPULSE | GPIO47 |
+| 7 | TIMEPULSE | GPIO15 |
 | 8 | SAFEBOOT_N | Open, with a test pad |
 | 9 | SDA | Open |
 | 12 | SCL | Open |
@@ -299,10 +334,10 @@ SAFEBOOT_N is connected to TIMEPULSE inside the module through 1k. If
 TIMEPULSE is pulled low at start-up, the receiver enters safe boot mode
 (SAM-IM §3.2.3.3). Therefore:
 
-- TIMEPULSE goes to GPIO47, which has no power-up glitch. It must not go to
+- TIMEPULSE goes to GPIO15, which has no power-up glitch. It must not go to
   GPIO1-14, 17 or 18, which drive low for ~60us at power-up.
 - No pull-down, capacitor or other load on TIMEPULSE.
-- GPIO47 is configured as an input with no pull-down.
+- GPIO15 is configured as an input with no pull-down.
 - SAFEBOOT_N gets a test pad so it can be grounded during power-up to recover
   a receiver with corrupted firmware.
 
@@ -386,16 +421,16 @@ This section sets the board outline.
 |---|---|---|
 | 1, 8, 10 | GND | Ground |
 | 2 | MISO | GPIO21 |
-| 3 | MOSI | GPIO15 |
+| 3 | MOSI | GPIO47 |
 | 4 | SCK | GPIO16 |
 | 5 | NSS | GPIO14 |
-| 6 | RESET | GPIO38 |
+| 6 | RESET | GPIO48 |
 | 7 | DIO5 | Open |
 | 9 | ANT | u.FL via 50 ohm microstrip |
 | 11 | DIO3 | Open |
 | 12 | DIO4 | Open |
 | 13 | 3.3V | 3V3 |
-| 14 | DIO0 | GPIO48 |
+| 14 | DIO0 | GPIO1 |
 | 15 | DIO1 | GPIO42 |
 | 16 | DIO2 | Open |
 
@@ -409,7 +444,7 @@ Package: 16 x 16mm, 2mm pitch castellations, 8 per side (RFM Fig. 57).
 
 - Active low. Left floating during power-on reset, then ready after 10ms.
   Manual reset: pull low for at least 100us, release, wait 5ms (RFM §7.2).
-- The datasheet only describes pulling low and releasing. GPIO38 is therefore
+- The datasheet only describes pulling low and releasing. GPIO48 is therefore
   either high-Z (input) or driven low, never driven high.
 
 ### SPI and RF
@@ -490,7 +525,7 @@ values apply.
 | Rail | Panel limit | Design |
 |---|---|---|
 | VDD | 1.65-3.3V (4.0V abs. max) | 3V3. At the top of the range; within absolute maximum with regulator tolerance. |
-| VBAT (internal DC/DC on) | **3.5-4.2V**, 5V abs. max | **3.8V dedicated LDO** from the 5V rail after the polyfuse |
+| VBAT (internal DC/DC on) | **3.5-4.2V**, 5V abs. max | **3.8V LDO (TLV75801, adjustable)** from the 5V rail after the polyfuse |
 | VBAT current | 25.6mA typ, 32mA max | LDO rated ≥50mA |
 | VCC (generated) | 7.0-7.5V | Charge pump output, capacitor only |
 
@@ -547,10 +582,15 @@ nothing and recover a board that firmware has wedged.
 
 - **499 ohm series resistor on UART0 TX (GPIO43)** (HDG §1.3.7).
 - 100 ohm series resistors on UART1, both directions (GPIO17, GPIO18).
-- **SPI clock filters on GPIO12 (SD SCK) and GPIO16 (LoRa SCK):** series
-  resistor footprint fitted with 0 ohm (22-33 ohm option) and a capacitor to
-  GND footprint left unfitted, both close to the module (HDG §1.3.8). These
-  are the first lever if the SPI buses desense the GNSS.
+- **SPI clocks (GPIO12 SD SCK, GPIO16 LoRa SCK): no filter footprints.**
+  HDG §1.3.8 suggests a series resistor and capacitor close to the module.
+  The draft had them (R309/C307, R310/C308), but at layout no position on
+  either clock path could take them without forcing crossings, so they were
+  removed (rev v0.1). Mitigation: both clocks run point-to-point over the
+  solid In1 ground plane, at the far end of the board from the GNSS, and
+  firmware keeps SPI clocks at the lowest rate that meets throughput. If EMC
+  testing shows GNSS desense, v2 restores the footprints with the clock pins
+  re-placed.
 - USB series resistor and capacitor footprints, see USB-C.
 
 ## Service and test access
@@ -717,9 +757,9 @@ Firmware must enforce:
 - WiFi and LoRa transmit never overlap (see supply requirement).
 - SD sync after every record.
 - Radio at 866MHz. +20dBm limited to 1% duty cycle, otherwise ≤+17dBm.
-- LoRa RESET (GPIO38) only high-Z or low, never driven high.
+- LoRa RESET (GPIO48) only high-Z or low, never driven high.
 - GNSS reset by UBX-CFG-RST; GPIO7 RESET_N only for recovery, open drain.
-- GPIO47 (TIMEPULSE) input, no pull-down.
+- GPIO15 (TIMEPULSE) input, no pull-down.
 - OLED: RES# pulse after power-up, then the panel's initialisation sequence
   with internal DC/DC values (8Dh 14h, 81h CFh, D9h F1h, AFh).
 - GPIO39 and GPIO40 left unconfigured.
@@ -734,7 +774,11 @@ Firmware must enforce:
 - Confirm Lion Circuits can source SAM-M10Q, RFM95W-868S2, AP7361C-33E-13,
   USB-C receptacle and microSD socket turnkey, or whether any must be
   supplied by us.
-- Select the 3.8V VBAT LDO, the VBUS TVS and the EN supervisor.
+- C403 backup supercap: the selected part is rated only to +60°C, below
+  vehicle cabin extremes. Acceptable while DNP; choose a wider-temperature
+  part (or a rechargeable lithium cell) before fitting it.
+- Create project footprints for C403 (Elna DSK) and check the KiCad
+  PTS810 footprint against the C&K drawing.
 - Panel operating range is -30 to +70°C; enclosure design must keep it out of
   direct sun.
 - Board outline: the 50 x 50mm GNSS ground zone, the ESP32 antenna edge and

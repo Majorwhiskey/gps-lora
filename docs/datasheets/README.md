@@ -27,10 +27,10 @@ manufacturer's website and save it here under the file name given.
 |---|---|---|---|
 | 12 | OLED panel: EastRising ER-OLED0.96-1.1W | ER-OLED0.96-1 series datasheet, file `er-oled0.96-1_datasheet.pdf` | Selected |
 | 13 | ZIF connector: Hirose FH12-30S-0.5SH(55) | Hirose FH12 series datasheet | Selected; datasheet needed |
-| 14 | microSD socket, push-push | Socket drawing | Candidates: Molex 503182-1852, Hirose DM3AT-SF-PEJM5 |
-| 15 | Polyfuse, 750mA hold | Datasheet | Candidates: Littelfuse 1206L075, Bourns MF-MSMF075 |
+| 14 | microSD socket: Hirose DM3AT-SF-PEJM5 | Socket drawing | Selected |
+| 15 | Polyfuse: Littelfuse 1206L075THYR | 1206L series datasheet | Selected |
 | 16 | u.FL receptacle | Hirose U.FL-R-SMT-1 drawing | |
-| 17 | Tactile switch, SMD | Switch drawing | Side- or top-actuated, depending on enclosure |
+| 17 | Tactile switch: C&K PTS810 SJM 250 SMTR LFS | PTS810 drawing | Selected |
 | 18 | 100uF bulk capacitor | Datasheet with DC-bias curve | Polymer or 1210 X5R ceramic |
 
 ## Footprint references
@@ -45,7 +45,15 @@ manufacturer's website and save it here under the file name given.
 |---|---|---|
 | 20 | Schottky diode, ≤0.45V at 600mA | Datasheet |
 | 21 | 2200uF holdup capacitor | Datasheet (footprint size) |
-| 22 | GNSS backup supercapacitor | Datasheet |
+| 22 | GNSS backup supercap: Elna DSK-3R3H224U-HL | DSK series datasheet |
+
+## Added during schematic capture
+
+| # | Part | Document |
+|---|---|---|
+| 24 | TI TLV75801PDBV (OLED VBAT LDO) | TLV758P datasheet |
+| 25 | Littelfuse SMF5.0A (VBUS TVS) | SMF series datasheet |
+| 26 | Microchip MCP120T-300I/TT (EN supervisor) | MCP120 datasheet |
 
 ## Fabricator
 
