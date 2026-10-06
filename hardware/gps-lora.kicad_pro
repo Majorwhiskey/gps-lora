@@ -555,15 +555,15 @@
       },
       {
         "clearance": 0.2,
+        "diff_pair_gap": 0.2,
+        "diff_pair_width": 0.2,
         "name": "USB",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 1,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.2,
         "tuning_profile": "",
-        "via_diameter": 0.8,
-        "diff_pair_width": 0.2,
-        "diff_pair_gap": 0.2
+        "via_diameter": 0.8
       }
     ],
     "meta": {
@@ -714,7 +714,7 @@
         "uuid": "4fe56230-194d-489d-a2bc-70162e8e6b48"
       }
     ],
-    "used_designators": "",
+    "used_designators": "#PWR28-29,U1",
     "variants": []
   },
   "sheets": [
