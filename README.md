@@ -19,6 +19,8 @@ updates. Designed in KiCad as a 4-layer, fully machine-assembled board
 - u-blox SAM-M10Q GNSS module with integrated antenna, UART and PPS
 - microSD logging on a dedicated SPI bus
 - RFM95W (SX1276) 868 MHz-band LoRa radio on a second SPI bus, u.FL antenna
+- Telemetry and SD logs encrypted and authenticated (AES-128-CCM, per-tracker
+  keys); separate tracker and receiver firmware
 - Bare SSD1306 128x64 OLED panel on I2C, FPC connector
 - Low-dropout 3.3 V linear regulator (AP7361C)
 - Tag-Connect footprint for UART0 console, EN and GPIO0
@@ -43,14 +45,21 @@ flowchart LR
 |---|---|
 | `hardware/` | KiCad 10 project (schematic, PCB) |
 | `hardware/lib/` | Project-local symbols, footprints and 3D models |
-| `docs/` | Design specification and images |
-| `firmware/` | ESP32-S3 firmware (not started) |
+| `docs/` | Design and security specifications (Markdown and PDF), images |
+| `firmware/` | ESP32-S3 firmware (Arduino, untested on hardware) |
 | `production/` | Fabrication outputs (Gerbers, drill, BOM, CPL) per release |
 
 ## Documentation
 
 - [PCB design specification](docs/PCB_DESIGN.md): pin assignment, power
   budget, layout rules and design decisions.
+- [Firmware](firmware/README.md) ([PDF](docs/FIRMWARE.pdf)): tracker and
+  receiver firmware, build, console, WiFi service mode, OTA, bring-up.
+- [Security specification](docs/SECURITY.md) ([PDF](docs/SECURITY.pdf)):
+  threat model, AES-128-CCM design, key management, LoRa packet and log
+  formats, provisioning, test vectors.
+
+PDFs are generated from the Markdown with `python3 docs/build_pdf.py`.
 
 ## Opening the design
 
@@ -68,4 +77,5 @@ their region.
 
 Hardware design files are licensed under the
 [CERN Open Hardware Licence Version 2 – Permissive](LICENSE)
-(CERN-OHL-P-2.0). Firmware will be licensed separately when added.
+(CERN-OHL-P-2.0). Firmware (`firmware/`) is licensed under the
+[Apache License 2.0](firmware/LICENSE).

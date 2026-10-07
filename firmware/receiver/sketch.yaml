@@ -1,0 +1,14 @@
+profiles:
+  receiver:
+    fqbn: esp32:esp32:esp32s3:USBMode=hwcdc,CDCOnBoot=cdc,FlashSize=8M,PartitionScheme=default_8MB,PSRAM=disabled
+    platforms:
+      - platform: esp32:esp32 (3.3.8)
+        platform_index_url: https://espressif.github.io/arduino-esp32/package_esp32_index.json
+    libraries:
+      - TinyGPSPlus (1.0.3)
+      - SdFat (2.3.0)
+      - RadioLib (7.8.1)
+      - U8g2 (2.36.19)
+      - dir: ../lib/gps-lora-core
+
+default_profile: receiver
