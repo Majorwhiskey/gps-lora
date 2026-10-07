@@ -1,0 +1,121 @@
+{
+  "fab": "jlcpcb_2layer",
+  "copper_oz": 1,
+  "netclasses": [
+    {
+      "name": "Default",
+      "track_width": 0.2,
+      "clearance": 0.2,
+      "via_diameter": 0.6,
+      "via_drill": 0.3
+    },
+    {
+      "name": "PWR",
+      "priority": 1,
+      "current_a": 1.0,
+      "track_width": 0.5,
+      "clearance": 0.2,
+      "via_diameter": 0.6,
+      "via_drill": 0.3,
+      "patterns": [
+        "+3V3",
+        "VBUS"
+      ]
+    },
+    {
+      "name": "SMPS_SW",
+      "priority": 0,
+      "current_a": 1.0,
+      "track_width": 0.6,
+      "clearance": 0.3,
+      "via_diameter": 0.6,
+      "via_drill": 0.3,
+      "nets": [
+        "/SW"
+      ]
+    },
+    {
+      "name": "USB_90R",
+      "priority": 2,
+      "track_width": 0.3,
+      "clearance": 0.2,
+      "diff_pair_width": 0.3,
+      "diff_pair_gap": 0.15,
+      "via_diameter": 0.6,
+      "via_drill": 0.3,
+      "patterns": [
+        "/USB_D*"
+      ]
+    },
+    {
+      "name": "GND_POUR",
+      "priority": 3,
+      "track_width": 0.4,
+      "clearance": 0.2,
+      "via_diameter": 0.6,
+      "via_drill": 0.3,
+      "patterns": [
+        "GND"
+      ]
+    }
+  ],
+  "diff_pairs": [
+    {
+      "name": "USB",
+      "match": "/USB_D*",
+      "p": "/USB_D+",
+      "n": "/USB_D-",
+      "netclass": "USB_90R",
+      "max_skew_mm": 0.15,
+      "max_uncoupled_mm": 3
+    }
+  ],
+  "keepaways": [
+    {
+      "name": "SW keepaway",
+      "net": "/SW",
+      "clearance_mm": 0.5
+    }
+  ],
+  "sensitive_refs": [
+    "Y1",
+    "L1"
+  ],
+  "autoroute": {
+    "engine": "freerouting",
+    "passes": 30,
+    "ignore_netclasses": [
+      "GND_POUR"
+    ],
+    "via_cost": 80,
+    "timeout": 900
+  },
+  "pours": [
+    {
+      "net": "GND",
+      "layers": [
+        "B.Cu"
+      ],
+      "clearance": 0.25
+    },
+    {
+      "net": "GND",
+      "layers": [
+        "F.Cu"
+      ],
+      "clearance": 0.3
+    }
+  ],
+  "stitching": {
+    "net": "GND",
+    "pitch": 5,
+    "via": "0.6/0.3",
+    "edge_pitch": 4,
+    "layers": [
+      "F.Cu",
+      "B.Cu"
+    ],
+    "keep_out_courtyards": true
+  },
+  "_comment": "Plan for tests/make_test_board.py. Uses the Freerouting JAR by default; smoke_test.sh switches to freeroute-py when no jar is available."
+}

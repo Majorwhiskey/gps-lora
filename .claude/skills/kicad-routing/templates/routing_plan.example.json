@@ -1,0 +1,59 @@
+{
+  "_comment": "Example plan for a 2-layer STM32 + USB-C + 5V->3.3V buck board. Every number is a starting point the agent must justify (trace_width.py, stackup calculator, datasheets). Keys starting with _ are ignored.",
+  "fab": "jlcpcb_2layer",
+  "fab_overrides": {"min_copper_edge_clearance": 0.4},
+  "copper_oz": 1,
+  "stackup": {"layers": 2, "thickness_mm": 1.6, "notes": "B.Cu = solid GND pour; F.Cu = components + signals"},
+
+  "netclasses": [
+    {"name": "Default", "track_width": 0.2, "clearance": 0.2, "via_diameter": 0.6, "via_drill": 0.3},
+    {"name": "PWR_5V", "priority": 1, "current_a": 2.0, "track_width": 0.8, "clearance": 0.25,
+     "via_diameter": 0.8, "via_drill": 0.4, "patterns": ["VBUS", "+5V", "/VIN*"]},
+    {"name": "PWR_3V3", "priority": 2, "current_a": 1.0, "track_width": 0.5, "clearance": 0.2,
+     "via_diameter": 0.6, "via_drill": 0.3, "patterns": ["+3V3", "+3.3V", "/VDD*"]},
+    {"name": "SMPS_SW", "priority": 0, "current_a": 2.0, "track_width": 1.0, "clearance": 0.3,
+     "via_diameter": 0.8, "via_drill": 0.4, "nets": ["/SW"]},
+    {"name": "USB_90R", "priority": 3, "track_width": 0.3, "clearance": 0.2,
+     "diff_pair_width": 0.3, "diff_pair_gap": 0.15, "diff_pair_via_gap": 0.25,
+     "via_diameter": 0.6, "via_drill": 0.3, "patterns": ["/USB_D+", "/USB_D-"],
+     "_impedance_note": "Width/gap are placeholders: get 90 ohm diff values from the fab's impedance calculator for YOUR stackup (1.6 mm 2-layer coplanar-with-ground usually needs a ground pour beside the pair)."},
+    {"name": "GND_POUR", "priority": 4, "track_width": 0.4, "clearance": 0.2,
+     "via_diameter": 0.6, "via_drill": 0.3, "patterns": ["GND"]}
+  ],
+
+  "diff_pairs": [
+    {"name": "USB", "match": "/USB_D*", "p": "/USB_D+", "n": "/USB_D-", "netclass": "USB_90R",
+     "max_skew_mm": 0.15, "max_uncoupled_mm": 3, "gap_mm": 0.15, "max_vias": 2}
+  ],
+
+  "length_groups": [],
+
+  "keepaways": [
+    {"name": "SW node keep-away", "net": "/SW", "clearance_mm": 0.5}
+  ],
+
+  "custom_rules": [
+    "(rule \"No vias in crystal area\"\n  (condition \"A.Type == 'Via' && A.intersectsCourtyard('Y1')\")\n  (constraint disallow via))"
+  ],
+
+  "sensitive_refs": ["Y1", "L1", "U3"],
+
+  "critical_order": [
+    "1. Buck hot loop: CIN -> U3 VIN/PGND on F.Cu, no vias; SW -> L1 short and wide",
+    "2. Decoupling: every 100nF to its MCU pin, GND via at the cap pad",
+    "3. Crystal Y1 + load caps: short, symmetric, guard by GND pour, nothing under it",
+    "4. USB D+/D- as a coupled pair from connector to MCU, ESD part in-line, no stubs",
+    "5. Feedback divider: tap VOUT at the output cap, route FB away from SW"
+  ],
+
+  "autoroute": {"engine": "freerouting", "passes": 40, "ignore_netclasses": ["GND_POUR"],
+                "via_cost": 80, "timeout": 1200},
+
+  "pours": [
+    {"net": "GND", "layers": ["B.Cu"], "clearance": 0.25, "min_width": 0.25, "connection": "thermal", "priority": 0},
+    {"net": "GND", "layers": ["F.Cu"], "clearance": 0.3, "min_width": 0.3, "connection": "thermal", "priority": 0}
+  ],
+
+  "stitching": {"net": "GND", "pitch": 6, "via": "0.6/0.3", "edge_pitch": 4, "edge_inset": 1.2,
+                "layers": ["F.Cu", "B.Cu"], "keep_out_courtyards": true}
+}

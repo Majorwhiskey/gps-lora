@@ -1,0 +1,38 @@
+{
+  "_comment": "Routing plan for gps-lora (kicad-routing skill). Net classes and rules already live in gps-lora.kicad_pro / gps-lora.kicad_dru; this file records the intent and drives review_routing.py.",
+  "fab": "generic_conservative",
+  "_fab_note": "Lion Circuits, Bangalore. Board rules kept as set in the project: 0.2 mm track/space, 0.8/0.4 mm vias, 0.5 mm copper-to-edge.",
+  "copper_oz": 1,
+  "stackup": {"layers": 4, "thickness_mm": 1.6,
+              "notes": "L1 F.Cu signals + GND pour; L2 (GND) solid ground, no traces; L3 (PWR) 3V3 plane with +5V island, no traces; L4 B.Cu signals + GND pour. Exact Lion Circuits stackup still pending."},
+
+  "netclasses": [
+    {"name": "Default", "track_width": 0.2, "clearance": 0.2, "via_diameter": 0.8, "via_drill": 0.4},
+    {"name": "Power", "priority": 2, "current_a": 0.75, "track_width": 0.5, "clearance": 0.2,
+     "via_diameter": 0.8, "via_drill": 0.4, "patterns": ["VBUS", "*VBUS_FUSED", "+5V", "+3V3", "GND"],
+     "_current_note": "0.75 A = polyfuse hold current, the most the input path can carry continuously; trace_width.py gives 0.30 mm recommended (external, 1 oz, 10 C)."},
+    {"name": "USB", "priority": 1, "track_width": 0.2, "clearance": 0.2, "diff_pair_width": 0.2, "diff_pair_gap": 0.2,
+     "via_diameter": 0.8, "patterns": ["USB_D*"],
+     "_impedance_note": "ESP32-S3 USB is full speed (12 Mbit/s): 90 ohm geometry is not critical at this edge rate. Width/gap are placeholders until the Lion stackup arrives."},
+    {"name": "RF", "priority": 0, "track_width": 0.3, "clearance": 0.2, "via_diameter": 0.8, "patterns": ["*LORA_ANT"],
+     "_impedance_note": "50 ohm width pending the Lion stackup."}
+  ],
+
+  "diff_pairs": [
+    {"name": "USB", "p": "USB_DP", "n": "USB_DN", "netclass": "USB", "max_skew_mm": 10, "max_vias": 2,
+     "_note": "Full-speed only; skew budget is generous. P and N could not share one channel past the microSD bus (see report)."}
+  ],
+
+  "sensitive_refs": ["U401", "J401", "U402"],
+
+  "critical_order": [
+    "1. Power path (VBUS -> F201 -> U202 -> +3V3 plane) - routed by the user",
+    "2. GNSS (U401) zone rules from kicad_dru: no signal vias within 20 mm, top layer only under the module",
+    "3. USB D+/D- connector -> USBLC6 -> R304/R305 -> IO20/IO19",
+    "4. SPI buses (microSD, LoRa) point-to-point over the In1 plane",
+    "5. Everything else; then GND pad vias, stitching (6 mm grid, 4 mm edge fence)"
+  ],
+
+  "stitching": {"net": "GND", "pitch": 6, "via": "0.8/0.4", "edge_pitch": 4, "edge_inset": 1.5,
+                "layers": ["F.Cu", "B.Cu"], "keep_out_courtyards": true}
+}

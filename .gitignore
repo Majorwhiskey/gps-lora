@@ -31,3 +31,13 @@ docs/datasheets/*.pdf
 docs/datasheets/*.jpeg
 docs/datasheets/*.jpg
 docs/datasheets/*.png
+
+# Routing skill: downloaded router binary and script backups
+.claude/skills/kicad-routing/tools/*.jar
+hardware/.routing_backups/
+hardware/fab/
+
+# Vendor 3D models: keep locally, do not redistribute (same policy as datasheets)
+hardware/lib/3dmodels/*.STEP
+hardware/lib/3dmodels/*.step
+__pycache__/

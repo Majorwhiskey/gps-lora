@@ -1,0 +1,23 @@
+#VRML V2.0 utf8
+# EastRising ER-OLED0.96-1.1W 128x64 OLED panel, simplified (gps-lora project)
+Transform { translation 0.00000 0.00000 0.45276 children [ Shape {
+ appearance Appearance { material Material { diffuseColor 0.55 0.6 0.66 specularColor 0.3 0.3 0.3 shininess 0.6 transparency 0.0 } }
+ geometry Box { size 10.51181 7.58268 0.27559 } } ] }
+Transform { translation 0.00000 0.23622 0.72835 children [ Shape {
+ appearance Appearance { material Material { diffuseColor 0.5 0.55 0.6 specularColor 0.3 0.3 0.3 shininess 0.6 transparency 0.0 } }
+ geometry Box { size 10.51181 7.11024 0.27559 } } ] }
+Transform { translation 0.00000 0.78740 0.87008 children [ Shape {
+ appearance Appearance { material Material { diffuseColor 0.03 0.03 0.04 specularColor 0.3 0.3 0.3 shininess 0.9 transparency 0.0 } }
+ geometry Box { size 9.34646 5.06299 0.00787 } } ] }
+Transform { translation 0.00000 0.78740 0.87402 children [ Shape {
+ appearance Appearance { material Material { diffuseColor 0.0 0.0 0.0 specularColor 0.3 0.3 0.3 shininess 1.0 transparency 0.0 } }
+ geometry Box { size 8.55906 4.27559 0.00394 } } ] }
+Transform { translation 0.00000 -3.67323 0.59843 children [ Shape {
+ appearance Appearance { material Material { diffuseColor 0.15 0.15 0.15 specularColor 0.3 0.3 0.3 shininess 0.2 transparency 0.0 } }
+ geometry Box { size 6.10236 0.23622 0.01969 } } ] }
+Transform { translation 0.00000 -5.93110 0.37402 children [ Shape {
+ appearance Appearance { material Material { diffuseColor 0.85 0.52 0.08 specularColor 0.3 0.3 0.3 shininess 0.3 transparency 0.0 } }
+ geometry Box { size 6.10236 4.67323 0.04724 } } ] }
+Transform { translation 0.00000 -4.97244 0.40157 children [ Shape {
+ appearance Appearance { material Material { diffuseColor 0.2 0.2 0.2 specularColor 0.3 0.3 0.3 shininess 0.2 transparency 0.0 } }
+ geometry Box { size 2.36220 1.18110 0.01181 } } ] }

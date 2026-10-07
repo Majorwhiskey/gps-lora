@@ -698,6 +698,33 @@ not, the computed widths still apply, with a wider tolerance.
     empty box for a serial number or QR label, and a hot-surface mark next to
     the regulator.
 
+### Routing notes (rev v0.1, routing completed 2026-10-07)
+
+Signals use L1 and L4 only; L2 and L3 carry no traces. Every pad, via and
+pour island on GND reaches the L2 plane.
+
+- **USB corner:** the microSD bus runs on L4 directly under USB D+ (y 106.9
+  to 108.2 mm, 0.22 mm gaps), with D- below it. This leaves room for a GND
+  via beside USBLC6 pin 2 and for D201 (TVS) GND to drop straight to a via
+  between its pad and the LoRa SPI lines. The three LoRa lines NSS, MISO
+  and MOSI turn east 1.4 mm higher than before to make room for that via.
+- **USB pair:** full speed only. D+ and D- differ by about 2 mm in length,
+  with 2 and 4 vias. This is acceptable at 12 Mbit/s. Widths are
+  placeholders until the Lion stackup arrives.
+- **Placement changes made during routing:**
+  - C306 (DNP) moved beside R305.
+  - C508, C509 and R508 rotated 180 degrees, so VCC, VCOMH and IREF drop
+    straight from J502 and their GND pads share one bus to R510.
+  - R302 moved up 1.2 mm.
+- **In-pad vias:** removed from R205, R505, R204, R507 and U301 pin 7.
+  - One remains, on R504.2 (SD_DAT1 pull-up), where no legal spot exists.
+    Ask Lion for a filled via there, or accept it on a pull-up.
+  - The R301.1 via ring overlaps the pad edge by 0.07 mm; its hole is
+    outside the pad.
+- **GND stitching:** 6 mm staggered grid plus a 4 mm edge fence, 0.8/0.4 mm
+  vias. Small GND pads with no room for thermal spokes use a solid zone
+  connection.
+
 ## Fab and assembly (Lion Circuits)
 
 | Parameter | Value |
@@ -766,19 +793,35 @@ Firmware must enforce:
 
 ## Open items
 
-- Obtain the TYPE-C-31-M-12 mechanical drawing as a PDF from HRO or LCSC. The
-  supplied image is too low-resolution to verify a footprint. KiCad's stock
-  `USB_C_Receptacle_HRO_TYPE-C-31-M-12` footprint will be checked against it.
-- Obtain the Hirose FH12 series datasheet and confirm FPC insertion depth and
-  stiffener requirements against the panel's FPC.
+- **J502 pin order is mirrored (found 2026-10-07, not yet fixed).**
+  - On the panel FPC (OLED datasheet 1.4.1/1.4.2), pin 1 is on the left in
+    the front view with the tail pointing down.
+  - The panel lies face up with its tail pointing south into J502, so panel
+    pin 1 lands on J502's west contact. That contact is FH12 contact 30
+    (Hirose drawing EDC3-150229-11; J502 is rotated 180 degrees).
+  - Panel pin n therefore mates J502 pin 31-n, but the schematic connects
+    J502 pin n to panel pin n.
+  - Fix before fab: re-map the J502 nets (pin k carries panel signal 31-k)
+    and rework the OLED support placement and routing, which swaps east and
+    west.
+- TYPE-C-31-M-12: KiCad's `USB_C_Receptacle_HRO_TYPE-C-31-M-12` was checked
+  against HRO's recommended layout (LCSC C165948 drawing). Signal pads,
+  5.78 mm NPTH and 8.64 mm shell slots match. The power pads sit 0.05 mm
+  wider than the drawing, within the 0.6 mm pad. OK.
 - Confirm Lion Circuits can source SAM-M10Q, RFM95W-868S2, AP7361C-33E-13,
   USB-C receptacle and microSD socket turnkey, or whether any must be
   supplied by us.
 - C403 backup supercap: the selected part is rated only to +60°C, below
   vehicle cabin extremes. Acceptable while DNP; choose a wider-temperature
   part (or a rechargeable lithium cell) before fitting it.
-- Create project footprints for C403 (Elna DSK) and check the KiCad
-  PTS810 footprint against the C&K drawing.
+- PTS810: the KiCad footprint matches C&K's recommended layout exactly
+  (1.05 x 0.65 mm pads, 3.1/5.2 and 1.5/2.8 mm spans). OK.
+- C403: project footprint `gps-lora:Elna_DSK_6.8x2.1mm_TerminalH` was created
+  from the Elna land pattern (+ pad 5.0 x 2.0, - pad 4.0 x 1.7, 8.3 mm
+  apart). It is not placed. The only slot next to V_BCKP (between V_BCKP at
+  x 21.5 and PPS at x 28.1, outside the 10 mm GNSS keep-out) is 6.6 mm wide
+  and the part needs 7.4 mm. Options: a smaller backup part (e.g. Elna
+  DSK 4.8 mm), or re-routing PPS east to widen the slot.
 - Panel operating range is -30 to +70°C; enclosure design must keep it out of
   direct sun.
 - Board outline: the 50 x 50mm GNSS ground zone, the ESP32 antenna edge and
