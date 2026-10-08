@@ -3,7 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "2.4 GHz Wi-Fi and Bluetooth module  https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf. gps-lora copy: thermal vias 0.4 mm drill / 0.8 mm pad for Lion Circuits minimum drill")
+	(descr "2.4 GHz Wi-Fi and Bluetooth module  https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf. theoros copy: thermal vias 0.4 mm drill / 0.8 mm pad for Lion Circuits minimum drill")
 	(tags "2.4 GHz Wi-Fi and Bluetooth module")
 	(property "Reference" "REF**"
 		(at -10.5 11.4 90)

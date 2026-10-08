@@ -3,13 +3,13 @@
 # OpenSSL headers (libssl-dev) and Python 3 with the cryptography package.
 CXX ?= g++
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -Werror -O1
-LIB := ../lib/gps-lora-core/src/gpslora
+LIB := ../lib/theoros-core/src/theoros
 SRCS := firmware_test.cpp crypto_openssl.cpp $(LIB)/crypto.cpp $(LIB)/keys.cpp \
         $(LIB)/packet.cpp $(LIB)/seclog.cpp
 
 test: firmware_test
 	./firmware_test
-	./firmware_test --vectors | python3 ../tools/gps_lora.py self-test
+	./firmware_test --vectors | python3 ../tools/theoros.py self-test
 
 firmware_test: $(SRCS) $(wildcard $(LIB)/*.h)
 	$(CXX) $(CXXFLAGS) -o $@ $(SRCS) -lcrypto

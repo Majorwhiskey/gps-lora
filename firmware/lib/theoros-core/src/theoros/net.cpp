@@ -52,7 +52,7 @@ void touch() { lastActivityMs = millis(); }
 bool auth() {
   touch();
   if (server.authenticate(user, webPass)) return true;
-  server.requestAuthentication(BASIC_AUTH, "gps-lora");
+  server.requestAuthentication(BASIC_AUTH, "theoros");
   return false;
 }
 
@@ -86,12 +86,12 @@ void handleRoot() {
   h.reserve(4096);
   h += F("<!doctype html><html><head><meta charset=utf-8>"
          "<meta name=viewport content='width=device-width,initial-scale=1'>"
-         "<title>gps-lora</title><style>"
+         "<title>theoros</title><style>"
          "body{font-family:system-ui,sans-serif;margin:16px;max-width:720px}"
          "table{border-collapse:collapse;width:100%}"
          "td,th{padding:4px 8px;border-bottom:1px solid #ccc;text-align:left}"
          "pre{background:#eee;padding:8px;overflow-x:auto}"
-         "</style></head><body><h1>gps-lora ");
+         "</style></head><body><h1>theoros ");
   h += role::name();
   h += F("</h1><pre>");
   h += statusJson();
@@ -163,7 +163,7 @@ void handleDelete() {
 
 void handleUpdateDone() {
   if (!uploadAuthed) {
-    server.requestAuthentication(BASIC_AUTH, "gps-lora");
+    server.requestAuthentication(BASIC_AUTH, "theoros");
     return;
   }
   if (uploadOk) {
@@ -278,7 +278,7 @@ void task(void *) {
 }  // namespace
 
 void begin() {
-  snprintf(hostname, sizeof(hostname), "gps-lora-%04x", lora_link::nodeId());
+  snprintf(hostname, sizeof(hostname), "theoros-%04x", lora_link::nodeId());
   WiFi.persistent(false);  // Credentials live in our own NVS namespace
   WiFi.mode(WIFI_OFF);
   server.on("/", HTTP_GET, handleRoot);

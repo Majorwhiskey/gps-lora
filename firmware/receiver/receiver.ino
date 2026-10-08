@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
-// gps-lora receiver firmware, ESP32-S3.
+// Theoros receiver firmware, ESP32-S3.
 //
 // Listens for trackers. Every packet is authenticated and decrypted with the
 // master key (AES-128-CCM); forged, damaged, replayed and stale packets are
 // dropped. Good packets are appended to RXnnnn.CSV, printed on USB as one
 // JSON line, and shown on the OLED with distance and direction to the
 // tracker. The radio never transmits. Shared runtime (button, LED, display,
-// WiFi, OTA, security) is in firmware/lib/gps-lora-core. See
+// WiFi, OTA, security) is in firmware/lib/theoros-core. See
 // firmware/README.md.
 //
 // Status LED:
@@ -18,7 +18,7 @@
 // Eject button: short press toggles WiFi service mode; hold 1 s to eject the
 // card; press again while ejected to resume.
 
-#include <gps_lora.h>
+#include <theoros.h>
 
 namespace {
 

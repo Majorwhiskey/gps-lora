@@ -152,7 +152,7 @@ void begin(role::Role r, const char *logPrefix, HeaderFn logHeader, EpochHandler
 
   Serial.begin(115200);  // USB Serial/JTAG; baud rate is ignored
   delay(500);            // Give a host terminal a moment to attach
-  Serial.printf("\ngps-lora %s %s, reset reason %d\n", role::name(), FW_VERSION,
+  Serial.printf("\ntheoros %s %s, reset reason %d\n", role::name(), FW_VERSION,
                 esp_reset_reason());
 
   esp_ota_img_states_t ota;
@@ -165,7 +165,7 @@ void begin(role::Role r, const char *logPrefix, HeaderFn logHeader, EpochHandler
   settings::begin();
   timekeeping::begin();
   display::begin();
-  display::message("gps-lora " FW_VERSION, role::name());
+  display::message("theoros " FW_VERSION, role::name());
   gnss::begin();
   lora_link::begin();  // Also derives the node ID
   security::begin(lora_link::nodeId());

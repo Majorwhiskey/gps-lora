@@ -15,7 +15,7 @@
 		(layer "F.Fab")
 		(effects (font (size 1 1) (thickness 0.15)))
 	)
-	(property "Footprint" "gps-lora:OLED_ER-OLED0.96-1.1W"
+	(property "Footprint" "theoros:OLED_ER-OLED0.96-1.1W"
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)

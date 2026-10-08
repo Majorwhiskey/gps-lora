@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""gps-lora key management and decryption.
+"""Theoros key management and decryption.
 
 Needs Python 3.9+ and the 'cryptography' package (pip install cryptography).
 
@@ -27,14 +27,14 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.ciphers.aead import AESCCM
 from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 
-SALT = b"gps-lora"
+SALT = b"theoros"
 TAG = 8
 HEADER = struct.Struct("<BHI")             # version, node, counter
 BODY = struct.Struct("<IiihHBBB")          # time, lat, lon, alt, speed, sats, hdop, flags
 PACKET_VERSION = 2
 PACKET_SIZE = HEADER.size + BODY.size + TAG  # 34
 FLAG_FIX_VALID, FLAG_SD_LOG, FLAG_PPS = 0x01, 0x02, 0x04
-LOG_MAGIC = "# gps-lora encrypted log v1"
+LOG_MAGIC = "# theoros encrypted log v1"
 LOG_COLUMNS = "utc_date,utc_time,lat,lon,alt_m,speed_kmh,course_deg,sats,hdop"
 
 
@@ -140,7 +140,7 @@ def cmd_decrypt_log(path: str, log_path: str) -> None:
     with open(log_path) as f:
         lines = f.read().splitlines()
     if not lines or not lines[0].startswith(LOG_MAGIC):
-        sys.exit(f"{log_path}: not an encrypted gps-lora log")
+        sys.exit(f"{log_path}: not an encrypted theoros log")
     fields = dict(kv.split("=", 1) for kv in lines[0][len(LOG_MAGIC):].split() if "=" in kv)
     node = int(fields["node"], 16)
     dev = device_key(master, node)
@@ -212,8 +212,8 @@ def cmd_self_test() -> None:
     checks["log bytes"] = seal_log_line(lk, node, ctr, v["log_plain"]) == v["log_line"]
     bad = [k for k, ok in checks.items() if not ok]
     if bad:
-        sys.exit("gps_lora.py self-test FAILED: " + ", ".join(bad))
-    print(f"gps_lora.py: self-test passed ({len(checks)} checks against Python cryptography)")
+        sys.exit("theoros.py self-test FAILED: " + ", ".join(bad))
+    print(f"theoros.py: self-test passed ({len(checks)} checks against Python cryptography)")
 
 
 def main() -> None:

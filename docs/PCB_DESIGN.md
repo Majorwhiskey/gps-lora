@@ -816,7 +816,7 @@ Firmware must enforce:
   part (or a rechargeable lithium cell) before fitting it.
 - PTS810: the KiCad footprint matches C&K's recommended layout exactly
   (1.05 x 0.65 mm pads, 3.1/5.2 and 1.5/2.8 mm spans). OK.
-- C403: project footprint `gps-lora:Elna_DSK_6.8x2.1mm_TerminalH` was created
+- C403: project footprint `theoros:Elna_DSK_6.8x2.1mm_TerminalH` was created
   from the Elna land pattern (+ pad 5.0 x 2.0, - pad 4.0 x 1.7, 8.3 mm
   apart). It is not placed. The only slot next to V_BCKP (between V_BCKP at
   x 21.5 and PPS at x 28.1, outside the 10 mm GNSS keep-out) is 6.6 mm wide

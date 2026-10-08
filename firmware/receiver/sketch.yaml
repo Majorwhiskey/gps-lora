@@ -9,6 +9,6 @@ profiles:
       - SdFat (2.3.0)
       - RadioLib (7.8.1)
       - U8g2 (2.36.19)
-      - dir: ../lib/gps-lora-core
+      - dir: ../lib/theoros-core
 
 default_profile: receiver

@@ -1,5 +1,5 @@
 {
-  "_comment": "Routing plan for gps-lora (kicad-routing skill). Net classes and rules already live in gps-lora.kicad_pro / gps-lora.kicad_dru; this file records the intent and drives review_routing.py.",
+  "_comment": "Routing plan for Theoros (kicad-routing skill). Net classes and rules already live in theoros.kicad_pro / theoros.kicad_dru; this file records the intent and drives review_routing.py.",
   "fab": "generic_conservative",
   "_fab_note": "Lion Circuits, Bangalore. Board rules kept as set in the project: 0.2 mm track/space, 0.8/0.4 mm vias, 0.5 mm copper-to-edge.",
   "copper_oz": 1,

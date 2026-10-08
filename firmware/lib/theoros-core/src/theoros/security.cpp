@@ -13,7 +13,7 @@
 namespace security {
 namespace {
 
-Preferences prefs;  // Namespace "gpslora-sec": key, counter, peer counters
+Preferences prefs;  // Namespace "theoros-sec": key, counter, peer counters
 bool testOk = false;
 bool haveKey = false;
 uint8_t key[16];        // Device key (tracker) or master key (receiver)
@@ -80,7 +80,7 @@ Peer &peerFor(uint16_t node) {
 }  // namespace
 
 void begin(uint16_t node) {
-  prefs.begin("gpslora-sec", false);
+  prefs.begin("theoros-sec", false);
   testOk = crypto::selfTest();
   if (!testOk) Serial.println("security: CRYPTO SELF-TEST FAILED, encryption disabled");
 
@@ -102,7 +102,7 @@ void begin(uint16_t node) {
       Serial.println("security: NO KEY, packets cannot be read. Console: key set <master>");
     else
       Serial.printf("security: NO KEY, LoRa off and log UNENCRYPTED. Provision node %04x "
-                    "with tools/gps_lora.py\n", node);
+                    "with tools/theoros.py\n", node);
   }
 }
 

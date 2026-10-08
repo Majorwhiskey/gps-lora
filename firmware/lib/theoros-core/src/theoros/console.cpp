@@ -27,7 +27,7 @@ const char HELP[] =
     "  wifi pass <password>   set network password\n"
     "  web pass <password>    set web page password, 8+ chars (user: admin)\n"
     "  wifi on | off          service mode; pauses LoRa TX while on\n"
-    "  key set <32 hex>       install key from tools/gps_lora.py, reboots\n"
+    "  key set <32 hex>       install key from tools/theoros.py, reboots\n"
     "  key clear              remove key, reboots\n"
     "  gnss reset             UBX-CFG-RST hot start\n"
     "  eject | resume         SD card\n"
@@ -96,7 +96,7 @@ void run() {
     // The key was typed, so it is in this terminal's scrollback; it is never
     // printed by the board.
     if (!security::setKey(a)) {
-      Serial.println("need exactly 32 hex digits (from tools/gps_lora.py provision)");
+      Serial.println("need exactly 32 hex digits (from tools/theoros.py provision)");
       return;
     }
     Serial.printf("ok, key %s installed, rebooting\n", security::keyFingerprint());

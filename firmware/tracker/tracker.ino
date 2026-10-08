@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-// gps-lora tracker (transmitter) firmware, ESP32-S3.
+// Theoros tracker (transmitter) firmware, ESP32-S3.
 //
 // Logs a record per GNSS epoch to microSD and sends position over LoRa every
 // LORA_INTERVAL_MS. With a key installed, both are encrypted (AES-128-CCM);
 // without one the tracker does not transmit, and logs plaintext with a
 // warning. Shared runtime (button, LED, display, WiFi, OTA, security) is in
-// firmware/lib/gps-lora-core. See firmware/README.md.
+// firmware/lib/theoros-core. See firmware/README.md.
 //
 // Status LED:
 //   5 fast blinks, repeating ... no card or card error
@@ -16,7 +16,7 @@
 // Eject button: short press toggles WiFi service mode; hold 1 s to eject the
 // card; press again while ejected to resume.
 
-#include <gps_lora.h>
+#include <theoros.h>
 
 namespace {
 
@@ -27,11 +27,11 @@ uint32_t lastLoraMs = 0;
 const char *logHeader() {
   static char h[200];
   if (security::ready()) {
-    // tools/gps_lora.py reads node and key from the first line.
+    // tools/theoros.py reads node and key from the first line.
     snprintf(h, sizeof(h),
-             "# gps-lora encrypted log v1 node=%04x key=%s\n"
+             "# theoros encrypted log v1 node=%04x key=%s\n"
              "# columns: %s\n"
-             "# decrypt: tools/gps_lora.py decrypt-log MASTER_FILE <this file>\n",
+             "# decrypt: tools/theoros.py decrypt-log MASTER_FILE <this file>\n",
              lora_link::nodeId(), security::keyFingerprint(), COLUMNS);
   } else {
     snprintf(h, sizeof(h), "%s\n", COLUMNS);

@@ -1,4 +1,4 @@
-# gps-lora firmware
+# Theoros firmware
 
 Two Arduino firmwares for the ESP32-S3 board in `hardware/`. Build one
 board with each:
@@ -8,7 +8,7 @@ board with each:
 | **Tracker** (transmitter) | `tracker/` | Logs a CSV record per GNSS epoch (1 Hz) to microSD, shows status on the OLED, sends position over LoRa every 10 s |
 | **Receiver** | `receiver/` | Listens for trackers. Logs every packet to microSD, prints it as JSON on USB, shows distance and direction to the tracker on the OLED. Never transmits on LoRa |
 
-Both share one library, `lib/gps-lora-core/`, so GNSS, SD, display, WiFi
+Both share one library, `lib/theoros-core/`, so GNSS, SD, display, WiFi
 service mode (web page, log download, OTA update) and the console behave the
 same on both.
 
@@ -37,7 +37,7 @@ arduino-cli monitor -p /dev/ttyACM0
 
 `--export-binaries` puts `tracker.ino.bin` (or `receiver.ino.bin`) under
 `build/` for OTA uploads; `build/` is git-ignored. Edits to shared code go in
-`lib/gps-lora-core/src/gpslora/` and apply to both firmwares.
+`lib/theoros-core/src/theoros/` and apply to both firmwares.
 
 The board enumerates as a USB Serial/JTAG device. If firmware has wedged USB,
 hold BOOT, tap RESET, release BOOT to force download mode.
@@ -56,9 +56,9 @@ hold BOOT, tap RESET, release BOOT to force download mode.
 |---|---|
 | `tracker/tracker.ino` | Tracker: track logging, LoRa transmit, WiFi/LoRa interlock |
 | `receiver/receiver.ino` | Receiver: LoRa receive, RX log, JSON output |
-| `lib/gps-lora-core/src/gps_lora.h` | Umbrella header the sketches include |
+| `lib/theoros-core/src/theoros.h` | Umbrella header the sketches include |
 
-Shared modules, in `lib/gps-lora-core/src/gpslora/`:
+Shared modules, in `lib/theoros-core/src/theoros/`:
 
 | File | Contents |
 |---|---|
@@ -85,7 +85,7 @@ Host tests: `make -C firmware/tests` (needs `libssl-dev` and
 `pip install cryptography`). They run the crypto known-answer tests, check
 that every single-byte change to a packet is rejected, and require the
 firmware's packets and log lines to match an independent Python
-implementation byte for byte. `tools/gps_lora.py` is the PC side: keys,
+implementation byte for byte. `tools/theoros.py` is the PC side: keys,
 log decryption, packet decoding.
 
 ## Hardware rules the firmware enforces
@@ -133,7 +133,7 @@ per line (format: [SECURITY.md §9](../docs/SECURITY.md#9-encrypted-log-format))
 Decrypt on a PC:
 
 ```sh
-tools/gps_lora.py decrypt-log ~/gps-lora.master LOG0001.CSV > track.csv
+tools/theoros.py decrypt-log ~/theoros.master LOG0001.CSV > track.csv
 ```
 
 ```
@@ -157,7 +157,7 @@ CRC on. 34 bytes, about 247 ms on air (2.5% duty at the 10 s interval):
 
 Byte-level table, sealing and receiver checks:
 [SECURITY.md §7-8](../docs/SECURITY.md#7-lora-packet-format-version-2).
-`tools/gps_lora.py decode MASTER_FILE <hex>` decrypts packets captured by
+`tools/theoros.py decode MASTER_FILE <hex>` decrypts packets captured by
 other receivers.
 
 ## Security
@@ -181,9 +181,9 @@ Needs `pip install cryptography`. Once, on your PC (keep the file offline and
 backed up; losing it means losing access to every log):
 
 ```sh
-tools/gps_lora.py new-master ~/gps-lora.master
-tools/gps_lora.py provision ~/gps-lora.master ab12       # each tracker, node ID from `status`
-tools/gps_lora.py provision ~/gps-lora.master receiver   # the receiver
+tools/theoros.py new-master ~/theoros.master
+tools/theoros.py provision ~/theoros.master ab12       # each tracker, node ID from `status`
+tools/theoros.py provision ~/theoros.master receiver   # the receiver
 ```
 
 Paste each printed `key set …` line into that board's console; after the
@@ -203,7 +203,7 @@ Connect with `arduino-cli monitor -p /dev/ttyACM0` (or any terminal) and type
 | `wifi pass <password>` | Network password (never echoed) |
 | `web pass <password>` | Web page password, 8+ characters, user `admin` |
 | `wifi on` / `wifi off` | Service mode |
-| `key set <32 hex>` | Install the key from `tools/gps_lora.py provision`, reboots |
+| `key set <32 hex>` | Install the key from `tools/theoros.py provision`, reboots |
 | `key clear` | Remove the key, reboots |
 | `gnss reset` | UBX-CFG-RST hot start |
 | `eject` / `resume` | SD card |
@@ -215,7 +215,7 @@ Settings are kept in NVS in plain text (no flash encryption).
 
 Off by default. Turn it on with a **short press of the eject button** or
 `wifi on`. It needs a network and a web password set first. The OLED's last
-line shows the IP address; the board is also at `http://gps-lora-<node>.local/`.
+line shows the IP address; the board is also at `http://theoros-<node>.local/`.
 
 | Page | |
 |---|---|
@@ -277,7 +277,7 @@ unmount the card; press again to remount and start a new file.
 
 ## Not done yet
 
-- Receiver firmware for boards other than gps-lora (only the pin map differs)
+- Receiver firmware for boards other than Theoros (only the pin map differs)
 - Forwarding received packets to a server over WiFi
 - Low-power handling of the GNSS
 - eFuse hardening: flash encryption, NVS encryption, secure boot
@@ -295,7 +295,7 @@ unmount the card; press again to remount and start a new file.
 7. WiFi: set credentials, `wifi on`, open the page, download a log
 8. OTA: upload the same build, check `ota: new firmware confirmed` after 60 s
 9. Second board with the receiver firmware: packets arrive, distance looks
-   right; `tools/gps_lora.py decrypt-log` reads the tracker's card
+   right; `tools/theoros.py decrypt-log` reads the tracker's card
 
 ## License
 

@@ -5,11 +5,11 @@
 	(uuid "4fe56230-194d-489d-a2bc-70162e8e6b48")
 	(paper "A4")
 	(title_block
-		(title "GPS LoRa Logger")
+		(title "Theoros")
 		(date "2026-10-05")
-		(rev "v0.1")
+		(rev "V1.0")
 		(comment 1 "CERN-OHL-P-2.0")
-		(comment 2 "https://github.com/Majorwhiskey/gps-lora")
+		(comment 2 "https://github.com/Majorwhiskey/theoros")
 	)
 	(lib_symbols
 		(symbol "Mechanical:Fiducial"
@@ -415,7 +415,7 @@
 			)
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "FID3")
 					(unit 1)
@@ -493,7 +493,7 @@
 			(uuid "fa3ff322-b210-4bce-9a44-e599d211084d")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "#PWR052")
 					(unit 1)
@@ -571,7 +571,7 @@
 			(uuid "f742f135-7e89-40c8-82a2-733f48ba50ab")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "#PWR030")
 					(unit 1)
@@ -650,7 +650,7 @@
 			(uuid "8412c80b-17dc-489f-81e3-e9fc8676ad7c")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "H1")
 					(unit 1)
@@ -729,7 +729,7 @@
 			(uuid "b724c5f9-3b73-43f1-8164-2bf5847549cf")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "H2")
 					(unit 1)
@@ -807,7 +807,7 @@
 			(uuid "232aa568-16eb-440a-b7d5-d51d69a7522a")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "#PWR049")
 					(unit 1)
@@ -881,7 +881,7 @@
 			)
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "FID1")
 					(unit 1)
@@ -960,7 +960,7 @@
 			(uuid "f69ced90-50f9-4782-ac07-48a6b7a42370")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "H3")
 					(unit 1)
@@ -1038,7 +1038,7 @@
 			(uuid "4c685e03-8241-4644-a576-41386940168b")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "#PWR048")
 					(unit 1)
@@ -1117,7 +1117,7 @@
 			(uuid "13927ff6-a17c-4a78-b6e8-542bbaf324dc")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "H4")
 					(unit 1)
@@ -1193,7 +1193,7 @@
 			)
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(reference "FID2")
 					(unit 1)
@@ -1240,7 +1240,7 @@
 			)
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(page "3")
 				)
@@ -1286,7 +1286,7 @@
 			)
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(page "5")
 				)
@@ -1332,7 +1332,7 @@
 			)
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(page "2")
 				)
@@ -1378,7 +1378,7 @@
 			)
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48"
 					(page "4")
 				)

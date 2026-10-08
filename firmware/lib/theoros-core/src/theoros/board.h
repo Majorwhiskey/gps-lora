@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// Pin map for the gps-lora board, rev v0.1.
+// Pin map for the Theoros board, rev V1.0.
 // Checked against the schematic netlist (U301 pins) on 2026-10-07.
 // Source of truth: docs/PCB_DESIGN.md, "Pin assignment".
 #pragma once

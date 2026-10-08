@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 // Host backend for crypto.h, used only by the tests. The device uses
-// lib/gps-lora-core/src/gpslora/crypto_mbedtls.cpp.
+// lib/theoros-core/src/theoros/crypto_mbedtls.cpp.
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
 #include <string.h>
 
-#include "../lib/gps-lora-core/src/gpslora/crypto.h"
+#include "../lib/theoros-core/src/theoros/crypto.h"
 
 namespace crypto {
 namespace {

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fab-export.py - generate fab-ready outputs for the gps-lora board (Lion Circuits).
+fab-export.py - generate fab-ready outputs for the Theoros board (Lion Circuits).
 
 Ported from limen/hardware/roof-v2/tools/fab-export.py and adapted to this project:
 4-layer board whose inner layers are named GND/PWR, top-side-only assembly, board
@@ -9,12 +9,12 @@ fiducials, mounting holes, the Tag-Connect pads, the OLED panel) kept out of the
 assembler's files.
 
 Produces, under hardware/fab/ (gitignored):
-  1. gps-lora-bom.csv            BOM grouped by Value + Footprint (+ MPN once added)
-  2. gps-lora-pos.csv            pick-and-place, top side, mm, origin = board bottom-left
+  1. theoros-bom.csv            BOM grouped by Value + Footprint (+ MPN once added)
+  2. theoros-pos.csv            pick-and-place, top side, mm, origin = board bottom-left
   3. gerbers/*.gbr               Gerbers: F.Cu, In1 (GND), In2 (PWR), B.Cu + mask/silk/paste/edge
   4. gerbers/*.drl + map         Excellon drill files (PTH/NPTH separate) + drill map
-  5. gps-lora-fab-notes.txt      board spec sheet for the order form
-  6. gps-lora-fab-<rev>-<ts>.zip single archive of the above
+  5. theoros-fab-notes.txt      board spec sheet for the order form
+  6. theoros-fab-<rev>-<ts>.zip single archive of the above
 
 Before exporting it:
   * runs ERC and DRC (zones refilled, schematic parity) and refuses on any error
@@ -48,7 +48,7 @@ from pathlib import Path
 
 HW = Path(__file__).resolve().parent.parent          # hardware/
 REPO = HW.parent
-NAME = "gps-lora"
+NAME = "theoros"
 PCB = HW / f"{NAME}.kicad_pcb"
 SCH = HW / f"{NAME}.kicad_sch"
 FAB = HW / "fab"
@@ -346,7 +346,7 @@ def write_notes(work: Path, rev: str, warnings: list[str], spec: argparse.Namesp
              and not any(k in f.GetFPIDAsString() for k in NOT_PLACED)]
     top = sum(1 for f in parts if f.GetLayer() == pcbnew.F_Cu)
     gerbers = sorted(p.name for p in (FAB / "gerbers").iterdir())
-    txt = f"""gps-lora PCB - fabrication notes
+    txt = f"""Theoros PCB - fabrication notes
 Revision: {rev}    generated {datetime.now():%Y-%m-%d %H:%M}
 
 Board
@@ -355,7 +355,9 @@ Board
   Thickness:       {spec.thickness} mm, FR-4 (fab standard 4-layer stackup; impedance widths pending)
   Copper:          {spec.copper} oz outer (inner per fab standard)
   Finish:          {spec.finish}
-  Solder mask:     {spec.mask} both sides, silkscreen {spec.silk} top
+  Solder mask:     {spec.mask} both sides, silkscreen {spec.silk} both sides
+  Bottom artwork:  intentional solder mask opening (owl logo) over the GND pour on B.Cu;
+                   finish it like the pads, do not cover it with mask
   Min track/space: {pcbnew.ToMM(ds.m_TrackMinWidth):.2f} / {pcbnew.ToMM(ds.m_MinClearance):.2f} mm (design rule)
   Min via:         {pcbnew.ToMM(ds.m_ViasMinSize):.2f} mm pad / {pcbnew.ToMM(min_drill):.2f} mm drill, {len(vias)} vias
   Other holes:     {len(holes)} plated/non-plated pad hole(s), smallest {pcbnew.ToMM(min(holes)) if holes else 0:.2f} mm
@@ -411,7 +413,7 @@ def main() -> None:
     rev = git_rev()
     FAB.mkdir(parents=True, exist_ok=True)
     print(f"\n=== {NAME} ({rev}) ===")
-    with tempfile.TemporaryDirectory(prefix="gps-lora-fab-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="theoros-fab-") as tmp:
         work = make_work_copy(Path(tmp))
         warnings = preflight(work, args.force)
         bom = export_bom(work)

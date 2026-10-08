@@ -2,16 +2,16 @@
 // Host tests for the firmware's portable code: crypto, key derivation,
 // encrypted LoRa packets and encrypted log lines. Run: make -C firmware/tests
 //
-// With --vectors, prints test vectors as JSON for tools/gps_lora.py, which
+// With --vectors, prints test vectors as JSON for tools/theoros.py, which
 // re-derives and re-encrypts them with an independent implementation (Python
 // cryptography) and requires byte-for-byte agreement.
 #include <cstdio>
 #include <cstring>
 
-#include "../lib/gps-lora-core/src/gpslora/crypto.h"
-#include "../lib/gps-lora-core/src/gpslora/keys.h"
-#include "../lib/gps-lora-core/src/gpslora/packet.h"
-#include "../lib/gps-lora-core/src/gpslora/seclog.h"
+#include "../lib/theoros-core/src/theoros/crypto.h"
+#include "../lib/theoros-core/src/theoros/keys.h"
+#include "../lib/theoros-core/src/theoros/packet.h"
+#include "../lib/theoros-core/src/theoros/seclog.h"
 
 static int failures = 0;
 #define CHECK(c)                                                  \

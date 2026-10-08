@@ -1,5 +1,5 @@
 #VRML V2.0 utf8
-# EastRising ER-OLED0.96-1.1W 128x64 OLED panel, simplified (gps-lora project)
+# EastRising ER-OLED0.96-1.1W 128x64 OLED panel, simplified (Theoros project)
 Transform { translation 0.00000 0.00000 0.45276 children [ Shape {
  appearance Appearance { material Material { diffuseColor 0.55 0.6 0.66 specularColor 0.3 0.3 0.3 shininess 0.6 transparency 0.0 } }
  geometry Box { size 10.51181 7.58268 0.27559 } } ] }

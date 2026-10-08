@@ -1,6 +1,6 @@
-# gps-lora security specification
+# Theoros security specification
 
-Encryption and authentication of gps-lora telemetry and logs: threat model,
+Encryption and authentication of Theoros telemetry and logs: threat model,
 cryptographic design, exact wire and file formats, key management,
 operating procedures and test vectors. Detailed enough to write a
 compatible receiver or decoder from this document alone.
@@ -11,7 +11,7 @@ compatible receiver or decoder from this document alone.
 | Packet format | Version 2 (version 1 was unencrypted and is no longer accepted) |
 | Log format | Encrypted log v1 |
 | Status | Implemented and host-tested; **not yet run on hardware** |
-| Reference code | `firmware/lib/gps-lora-core/src/gpslora/` (`crypto`, `keys`, `packet`, `seclog`, `security`), `firmware/tools/gps_lora.py` |
+| Reference code | `firmware/lib/theoros-core/src/theoros/` (`crypto`, `keys`, `packet`, `seclog`, `security`), `firmware/tools/theoros.py` |
 
 ## Contents
 
@@ -82,7 +82,7 @@ compatible receiver or decoder from this document alone.
                  owner's PC                                     receiver board
             ┌──────────────────┐                              ┌───────────────────┐
             │ master key file  │── provision receiver ───────▶│ master key (NVS)  │
-            │ gps_lora.py      │                              │                   │
+            │ theoros.py       │                              │                   │
             └──────────────────┘                              │ per packet:       │
                      │ provision node                         │  device key =     │
                      ▼                                        │   HKDF(master,    │
@@ -101,7 +101,7 @@ compatible receiver or decoder from this document alone.
 | Use | Algorithm | Parameters |
 |---|---|---|
 | Encryption and authentication | AES-128-CCM, RFC 3610 / NIST SP 800-38C | 128-bit key, 13-byte nonce (L = 2), 8-byte tag (M = 8) |
-| Key derivation | HKDF-SHA256, RFC 5869 | Salt `gps-lora`, outputs 16 bytes |
+| Key derivation | HKDF-SHA256, RFC 5869 | Salt `theoros`, outputs 16 bytes |
 | Key fingerprint | HKDF-SHA256 | 4 bytes, shown as 8 hex digits |
 
 **Why CCM:** designed for short, constrained radio messages; standard in
@@ -122,15 +122,15 @@ shared portable C++ (`crypto.cpp`, `keys.cpp`, `packet.cpp`, `seclog.cpp`).
 
 ```
 master (16 B, random, generated on the owner's PC)
-  └ device key  = HKDF(salt="gps-lora", IKM=master, info="device v1" ‖ node)   per tracker
-      ├ radio key = HKDF(salt="gps-lora", IKM=device, info="radio v1")         LoRa packets
-      └ log key   = HKDF(salt="gps-lora", IKM=device, info="log v1")           SD log lines
-fingerprint(k) = HKDF(salt="gps-lora", IKM=k, info="fingerprint v1", L=4)
+  └ device key  = HKDF(salt="theoros", IKM=master, info="device v1" ‖ node)   per tracker
+      ├ radio key = HKDF(salt="theoros", IKM=device, info="radio v1")         LoRa packets
+      └ log key   = HKDF(salt="theoros", IKM=device, info="log v1")           SD log lines
+fingerprint(k) = HKDF(salt="theoros", IKM=k, info="fingerprint v1", L=4)
 ```
 
 | Item | Exact bytes |
 |---|---|
-| Salt | ASCII `gps-lora` (8 bytes) |
+| Salt | ASCII `theoros` (7 bytes) |
 | `node` | 16-bit node ID, little endian (2 bytes) |
 | Info strings | ASCII, no terminator: `device v1`, `radio v1`, `log v1`, `fingerprint v1` |
 | Output length | 16 bytes for keys, 4 bytes for fingerprints |
@@ -164,7 +164,7 @@ the counter must **never repeat** for a tracker.
 
 - One counter per tracker, shared by packets and log records, incremented
   for every encryption.
-- **Persisted in blocks.** NVS (namespace `gpslora-sec`, key `ctr`) holds
+- **Persisted in blocks.** NVS (namespace `theoros-sec`, key `ctr`) holds
   the first value not yet handed out. When the running value reaches it, it
   is advanced by 4096 before any value from the new block is used. After a
   reboot, counting resumes from the stored value; the rest of the previous
@@ -247,13 +247,13 @@ Rejected frames are reported on USB as
 A tracker with a key writes `LOGnnnn.CSV` as text:
 
 ```
-# gps-lora encrypted log v1 node=ab12 key=2c7fdcd6
+# theoros encrypted log v1 node=ab12 key=e5b0acaa
 # columns: utc_date,utc_time,lat,lon,alt_m,speed_kmh,course_deg,sats,hdop
-# decrypt: tools/gps_lora.py decrypt-log MASTER_FILE <this file>
-01020304,UoYq9qm4umxSNn8WqOfgWrpbmEMdu6CexykzSU0BABDwiyNL23Rkuf4GQKXkyEvbvgvDF6l6zEzU0lY6C41o8dpAZxILJhdtMP33
+# decrypt: tools/theoros.py decrypt-log MASTER_FILE <this file>
+01020304,5UKzG0B7UMdcpYyGyHNnLiLWgKZ0oFeO1C3m2b/WoKowzmBvLDtO1OlkH3ErZ/Q2phSSxorqVBveFvoHjWFrlfBzlIE9zSkb4hlS
 ```
 
-- **Line 1:** magic `# gps-lora encrypted log v1`, then `node=` (4 hex
+- **Line 1:** magic `# theoros encrypted log v1`, then `node=` (4 hex
   digits) and `key=` (device key fingerprint). Decoders check the
   fingerprint before decrypting, to catch the wrong master file.
 - **Lines starting with `#`** are comments.
@@ -264,7 +264,7 @@ A tracker with a key writes `LOGnnnn.CSV` as text:
 - One record per line, synced to the card after each, so a power cut
   damages at most the last line.
 
-**Decoder behaviour** (`gps_lora.py decrypt-log`): lines that fail to parse
+**Decoder behaviour** (`theoros.py decrypt-log`): lines that fail to parse
 or authenticate are reported as *damaged or altered* and skipped. Authentic
 lines whose counter does not increase are reported as *duplicated or
 reordered* and skipped. Lines removed entirely cannot be detected, because
@@ -277,9 +277,9 @@ records), and the console and OLED say so.
 
 | Item | Storage | Notes |
 |---|---|---|
-| Key (tracker: device key; receiver: master) | NVS `gpslora-sec` / `key`, 16 bytes | Plain in flash until section 16 |
-| Message counter | NVS `gpslora-sec` / `ctr` | Next unreserved value |
-| Receiver peer counters | NVS `gpslora-sec` / `p<node>` | Highest accepted counter |
+| Key (tracker: device key; receiver: master) | NVS `theoros-sec` / `key`, 16 bytes | Plain in flash until section 16 |
+| Message counter | NVS `theoros-sec` / `ctr` | Next unreserved value |
+| Receiver peer counters | NVS `theoros-sec` / `p<node>` | Highest accepted counter |
 
 - Keys are entered only over the USB console, never over WiFi or LoRa.
 - Boards never print a key, only its fingerprint.
@@ -304,7 +304,7 @@ Requires Python 3.9+ and `pip install cryptography`.
 **1. Master key, once:**
 
 ```sh
-firmware/tools/gps_lora.py new-master ~/gps-lora.master
+firmware/tools/theoros.py new-master ~/theoros.master
 ```
 
 Creates the file with mode 600 and refuses to overwrite an existing one.
@@ -314,7 +314,7 @@ Keep it offline and backed up (section 12).
 line), then:
 
 ```sh
-firmware/tools/gps_lora.py provision ~/gps-lora.master ab12
+firmware/tools/theoros.py provision ~/theoros.master ab12
 # tracker ab12, device key fingerprint 982dc4e9
 key set 3f1c…
 ```
@@ -325,7 +325,7 @@ Paste the `key set` line into the tracker's console. After the reboot,
 **3. The receiver:**
 
 ```sh
-firmware/tools/gps_lora.py provision ~/gps-lora.master receiver
+firmware/tools/theoros.py provision ~/theoros.master receiver
 ```
 
 Paste into the receiver's console and check the fingerprint the same way.
@@ -342,8 +342,8 @@ Paste into the receiver's console and check the fingerprint the same way.
 | **Tracker lost** | Its data is exposed; others are not. Ideally re-key everything with a new master. Per-tracker revocation is not implemented: until re-keyed, the receiver still accepts its packets |
 | **Add a tracker** | `provision` with the master; no change on the receiver |
 | **Replace the receiver** | Flash it, `provision … receiver`. Its peer table starts empty, which briefly reopens the replay window (section 15) |
-| **Read a tracker's card** | `gps_lora.py decrypt-log ~/gps-lora.master LOG0001.CSV > track.csv` |
-| **Decode captured packets** | `gps_lora.py decode ~/gps-lora.master <hex> …` |
+| **Read a tracker's card** | `theoros.py decrypt-log ~/theoros.master LOG0001.CSV > track.csv` |
+| **Decode captured packets** | `theoros.py decode ~/theoros.master <hex> …` |
 | **Retire a board** | `key clear`, then erase flash (`esptool.py erase_flash`) |
 
 ## 13. Test vectors
@@ -366,7 +366,7 @@ L = 42:
 OKM 3CB25F25FAACD57A90434F64D0362F2A2D2D0A90CF1A5A4C5DB02D56ECC4C5BF34007208D5B887185865
 ```
 
-### gps-lora vector
+### Theoros vector
 
 Inputs:
 
@@ -382,13 +382,13 @@ Outputs:
 
 | Output | Value |
 |---|---|
-| Device key | `7f3fa888d12d8f2bc54cfd983f402c1f` |
-| Radio key | `02283924348f1011cb2dbed7bfbee447` |
-| Log key | `d0c36b874f8b526d19d12eb7221ed91c` |
-| Device key fingerprint | `2c7fdcd6` |
+| Device key | `845f815fc13d4836a5e69fe7ba61c0d7` |
+| Radio key | `85011cb408223713e02ed992feb10d45` |
+| Log key | `3f736e8ecf96efd82b93413fb4f22425` |
+| Device key fingerprint | `e5b0acaa` |
 | Radio nonce | `04030201 12ab 52 000000000000` |
-| Packet | `0212ab04030201a86be443924b6b8c6e1d2b2336cbb5ee87b6cd2d11ce05616d3b19` |
-| Log line | `01020304,UoYq9qm4umxSNn8WqOfgWrpbmEMdu6CexykzSU0BABDwiyNL23Rkuf4GQKXkyEvbvgvDF6l6zEzU0lY6C41o8dpAZxILJhdtMP33` |
+| Packet | `0212ab04030201676c1254840ea0e459b56b903af8cec01ae39dc3175e30bdd17100` |
+| Log line | `01020304,5UKzG0B7UMdcpYyGyHNnLiLWgKZ0oFeO1C3m2b/WoKowzmBvLDtO1OlkH3ErZ/Q2phSSxorqVBveFvoHjWFrlfBzlIE9zSkb4hlS` |
 
 ## 14. Verification
 

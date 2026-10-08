@@ -7,7 +7,7 @@
 //
 // Nonce = counter | node | 'L'. One line per record keeps the file usable
 // after a power cut: only the line being written can be damaged, and the
-// decrypt tool (tools/gps_lora.py) reports it and moves on. Every line is
+// decrypt tool (tools/theoros.py) reports it and moves on. Every line is
 // authenticated: an altered or forged line fails to decrypt. Whole lines
 // could still be deleted unnoticed (counter gaps are normal, since the
 // counter is shared with radio packets).

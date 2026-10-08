@@ -12,7 +12,7 @@ String ssid, pass, web;
 }  // namespace
 
 void begin() {
-  prefs.begin("gpslora", false);
+  prefs.begin("theoros", false);
   ssid = prefs.getString("ssid", "");
   pass = prefs.getString("pass", "");
   web = prefs.getString("webpass", "");

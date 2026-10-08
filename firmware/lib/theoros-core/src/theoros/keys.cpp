@@ -6,7 +6,7 @@
 namespace keys {
 namespace {
 
-const uint8_t SALT[] = {'g', 'p', 's', '-', 'l', 'o', 'r', 'a'};
+const uint8_t SALT[] = {'t', 'h', 'e', 'o', 'r', 'o', 's'};
 
 bool derive(const Key ikm, const char *label, const uint8_t *extra, size_t extraLen,
             uint8_t *out, size_t outLen) {

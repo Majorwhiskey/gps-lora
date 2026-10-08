@@ -7,9 +7,9 @@
 	(title_block
 		(title "Radio")
 		(date "2026-10-05")
-		(rev "v0.1")
+		(rev "V1.0")
 		(comment 1 "CERN-OHL-P-2.0")
-		(comment 2 "https://github.com/Majorwhiskey/gps-lora")
+		(comment 2 "https://github.com/Majorwhiskey/theoros")
 	)
 	(lib_symbols
 		(symbol "Connector:Conn_Coaxial"
@@ -2622,7 +2622,7 @@
 			(uuid "475ec76f-10ce-416e-957d-ff03efaacdf0")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR413")
 					(unit 1)
@@ -2699,7 +2699,7 @@
 			(uuid "7ffc7223-f4e3-44dd-a27d-a7c74dd77695")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR407")
 					(unit 1)
@@ -2802,7 +2802,7 @@
 			(uuid "7a353ce1-9f84-489d-b939-86c80b16446a")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "R401")
 					(unit 1)
@@ -2959,7 +2959,7 @@
 			(uuid "9b923d83-a0a9-45e4-8d6e-2d6a523d57b0")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "U401")
 					(unit 1)
@@ -3036,7 +3036,7 @@
 			(uuid "b916d40e-b9b3-48cd-a8ba-be92da30512d")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR406")
 					(unit 1)
@@ -3113,7 +3113,7 @@
 			(uuid "8e9399c0-5e28-479b-b3d5-bb3aeb38d184")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR405")
 					(unit 1)
@@ -3190,7 +3190,7 @@
 			(uuid "18890e79-19f7-4b29-9b76-00441c074759")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR417")
 					(unit 1)
@@ -3267,7 +3267,7 @@
 			(uuid "57467e38-d14f-4267-8507-847fe65fad7d")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR411")
 					(unit 1)
@@ -3344,7 +3344,7 @@
 			(uuid "89895bb8-9470-412b-8cdf-cc6606e35040")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR402")
 					(unit 1)
@@ -3421,7 +3421,7 @@
 			(uuid "abe093a8-491c-4af4-a9a4-0bc03fa169a0")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR412")
 					(unit 1)
@@ -3498,7 +3498,7 @@
 			(uuid "9ec1c0d3-2a41-4208-9588-b4c2ea57ef47")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR401")
 					(unit 1)
@@ -3600,7 +3600,7 @@
 			(uuid "94c2dec2-1d8e-4172-9d71-23ea46df76eb")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "J401")
 					(unit 1)
@@ -3703,7 +3703,7 @@
 			(uuid "53045230-4095-491b-875b-8d974650cd28")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "C404")
 					(unit 1)
@@ -3780,7 +3780,7 @@
 			(uuid "b3b4e1d4-d498-4b32-a03a-9e4b1f74605d")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR403")
 					(unit 1)
@@ -3883,7 +3883,7 @@
 			(uuid "301dcfa2-1d91-4320-bf92-cb96d55037ac")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "C402")
 					(unit 1)
@@ -3960,7 +3960,7 @@
 			(uuid "7dd9a279-b195-41e4-ba9e-3b00ff8b605a")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR409")
 					(unit 1)
@@ -4063,7 +4063,7 @@
 			(uuid "7b5f1678-cb7a-4d90-b68c-9c53705819fb")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "C401")
 					(unit 1)
@@ -4140,7 +4140,7 @@
 			(uuid "485e3532-6177-4a18-9db5-d464cf985268")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR415")
 					(unit 1)
@@ -4243,7 +4243,7 @@
 			(uuid "fc53e6f7-cd06-4c1a-ba51-98f0cc37b68f")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "C406")
 					(unit 1)
@@ -4388,7 +4388,7 @@
 			(uuid "b13de6f0-bde4-496e-9c88-edfd55f4647a")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "U402")
 					(unit 1)
@@ -4491,7 +4491,7 @@
 			(uuid "6ddf1838-3d0f-4241-b6c8-56b08c50667c")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "D401")
 					(unit 1)
@@ -4568,7 +4568,7 @@
 			(uuid "efe04b83-e345-4eab-aac8-f6b9c09d73c6")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR414")
 					(unit 1)
@@ -4646,7 +4646,7 @@
 			(uuid "532d7319-ef34-4883-aa34-d5b358e6e8da")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "TP401")
 					(unit 1)
@@ -4723,7 +4723,7 @@
 			(uuid "bc970b11-bbe1-459f-ae83-5e7bcceaea00")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR404")
 					(unit 1)
@@ -4800,7 +4800,7 @@
 			(uuid "5bfc0e50-dee9-49ff-9648-7339bb2a87d4")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR410")
 					(unit 1)
@@ -4877,7 +4877,7 @@
 			(uuid "ad3820fd-661a-4d74-a208-9131c21f3c31")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR408")
 					(unit 1)
@@ -4980,7 +4980,7 @@
 			(uuid "69279640-ff6a-4c28-9fb7-118002d9cb47")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "C403")
 					(unit 1)
@@ -5083,7 +5083,7 @@
 			(uuid "02c5ad4f-eba4-4f7c-b6de-25b6f903f98b")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "C405")
 					(unit 1)
@@ -5160,7 +5160,7 @@
 			(uuid "aeab21ee-9ffd-4a60-b87d-4109e645503e")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#FLG401")
 					(unit 1)
@@ -5237,7 +5237,7 @@
 			(uuid "96209749-c764-451d-8621-42c83af8f861")
 		)
 		(instances
-			(project "gps-lora"
+			(project "theoros"
 				(path "/4fe56230-194d-489d-a2bc-70162e8e6b48/a79cf3e7-9482-407d-b641-c0c68ee623fe"
 					(reference "#PWR416")
 					(unit 1)

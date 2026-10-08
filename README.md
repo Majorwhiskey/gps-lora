@@ -1,4 +1,7 @@
-# gps-lora
+# Theoros
+
+*Theoros* (Greek θεωρός): an official observer and envoy, sent to watch
+and report back.
 
 USB-powered GPS logger with LoRa telemetry, built around the ESP32-S3.
 
@@ -64,7 +67,7 @@ PDFs are generated from the Markdown with `python3 docs/build_pdf.py`.
 ## Opening the design
 
 Requires [KiCad](https://www.kicad.org/) 10.0 or later. Open
-`hardware/gps-lora.kicad_pro`. All non-standard symbols, footprints and 3D
+`hardware/theoros.kicad_pro`. All non-standard symbols, footprints and 3D
 models are in `hardware/lib/`, so no external libraries are needed.
 
 ## Regulatory note
