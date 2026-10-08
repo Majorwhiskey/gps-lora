@@ -1,4 +1,4 @@
-# PCB design: USB-powered ESP32-S3 GPS logger with LoRa telemetry
+# Theoros PCB design: USB-powered ESP32-S3 GPS logger with LoRa telemetry
 
 Mains/USB powered. No battery. Production-grade, fully machine-assembled
 4-layer board: every component is placed and reflowed by the assembler
@@ -110,7 +110,7 @@ Spare: 6, 38.
 Pin choice follows the board layout: the four LoRa lines that reach the module's
 left edge (NSS, MISO, MOSI, RESET on pins 22-25) are ordered to match the
 routing channel beside the module, and DIO0/DIO1 use bottom-edge pins. Changed
-during layout (rev v0.1): PPS 47→15, LoRa MOSI 15→47, LoRa RESET 38→48,
+during layout (rev V1.0): PPS 47→15, LoRa MOSI 15→47, LoRa RESET 38→48,
 LoRa DIO0 48→1.
 
 Do not use: 39, 40. In USB-OTG download mode the S3 drives GPIO39 (MTCK) low
@@ -586,7 +586,7 @@ nothing and recover a board that firmware has wedged.
   HDG §1.3.8 suggests a series resistor and capacitor close to the module.
   The draft had them (R309/C307, R310/C308), but at layout no position on
   either clock path could take them without forcing crossings, so they were
-  removed (rev v0.1). Mitigation: both clocks run point-to-point over the
+  removed (rev V1.0). Mitigation: both clocks run point-to-point over the
   solid In1 ground plane, at the far end of the board from the GNSS, and
   firmware keeps SPI clocks at the lowest rate that meets throughput. If EMC
   testing shows GNSS desense, v2 restores the footprints with the clock pins
@@ -694,11 +694,15 @@ not, the computed widths still apply, with a wider tolerance.
 13. All components on the top side (single-sided assembly).
 14. Three fiducials on the top side, asymmetric. M2 mounting holes, plated,
     connected to GND. The enclosure model follows the board, not the reverse.
-15. Silkscreen: pin 1 on every polarised part, board name and revision, an
-    empty box for a serial number or QR label, and a hot-surface mark next to
-    the regulator.
+15. Silkscreen: pin 1 on every polarised part. Top: `THEOROS ${REVISION}`
+    (follows the title block) and ΘΕΩΡΟΣ above the GNSS module, "ANTENNA
+    BEFORE TX" pointing at J401, and a line under the OLED panel that is only
+    visible with the panel removed. Bottom: an owl made as a solder-mask
+    opening over the GND pour (gold with ENIG; every via inside stays tented)
+    and the motto "ΟΡΩ ΚΑΙ ΑΓΓΕΛΛΩ / I SEE AND I REPORT". Item 13 applies to
+    components only; the bottom side carries artwork but no parts.
 
-### Routing notes (rev v0.1, routing completed 2026-10-07)
+### Routing notes (rev V1.0, routing completed 2026-10-07)
 
 Signals use L1 and L4 only; L2 and L3 carry no traces. Every pad, via and
 pour island on GND reaches the L2 plane.
@@ -824,12 +828,10 @@ Firmware must enforce:
   DSK 4.8 mm), or re-routing PPS east to widen the slot.
 - Panel operating range is -30 to +70°C; enclosure design must keep it out of
   direct sun.
-- Board outline: the 50 x 50mm GNSS ground zone, the ESP32 antenna edge and
-  the OLED area together set the minimum size. Settle it at the start of
-  layout.
 - Set the radio to 866MHz, not the 868MHz library default. India's delicensed
   allocation is 865-867MHz.
-- Breadboard the full system on a DevKit before placement, using a SAM-M10Q
+- Breadboard the full system on a DevKit before ordering boards (layout is
+  done, but it is still the cheapest test of the firmware), using a SAM-M10Q
   breakout and an RFM95W adapter board so the tested parts match the design.
 - Confirm whether GPS and LoRa ever transmit simultaneously, or whether firmware
   holds off transmit until a fix is acquired.

@@ -12,7 +12,7 @@ Needs Python 3.9+ and the 'cryptography' package (pip install cryptography).
   self-test < vectors.json         cross-check the firmware (make -C firmware/tests)
 
 Keys are read from a file rather than the command line so they don't end up
-in shell history. Key hierarchy and formats: firmware/README.md, "Security".
+in shell history. Key hierarchy and formats: docs/SECURITY.md.
 """
 
 import base64

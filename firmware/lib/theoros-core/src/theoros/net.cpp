@@ -86,12 +86,12 @@ void handleRoot() {
   h.reserve(4096);
   h += F("<!doctype html><html><head><meta charset=utf-8>"
          "<meta name=viewport content='width=device-width,initial-scale=1'>"
-         "<title>theoros</title><style>"
+         "<title>Theoros</title><style>"
          "body{font-family:system-ui,sans-serif;margin:16px;max-width:720px}"
          "table{border-collapse:collapse;width:100%}"
          "td,th{padding:4px 8px;border-bottom:1px solid #ccc;text-align:left}"
          "pre{background:#eee;padding:8px;overflow-x:auto}"
-         "</style></head><body><h1>theoros ");
+         "</style></head><body><h1>Theoros ");
   h += role::name();
   h += F("</h1><pre>");
   h += statusJson();

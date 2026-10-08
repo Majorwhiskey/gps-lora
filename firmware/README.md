@@ -277,7 +277,7 @@ unmount the card; press again to remount and start a new file.
 
 ## Not done yet
 
-- Receiver firmware for boards other than Theoros (only the pin map differs)
+- Receiver firmware for boards other than the Theoros board (only the pin map differs)
 - Forwarding received packets to a server over WiFi
 - Low-power handling of the GNSS
 - eFuse hardening: flash encryption, NVS encryption, secure boot

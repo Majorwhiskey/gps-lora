@@ -10,10 +10,14 @@ position over 866 MHz LoRa. WiFi provides NTP time, log download and OTA
 updates. Designed in KiCad as a 4-layer, fully machine-assembled board
 (Lion Circuits PCBA, Bangalore, single-sided).
 
-> **Status: schematic in progress (v1).** Not yet fabricated or tested. Do not
-> order boards from this repository until a tagged release exists.
+> **Status: V1.0 design complete** (schematic, routed PCB, fab outputs and
+> firmware). Not yet fabricated or tested. Do not order boards from this
+> repository until a tagged release exists.
 
-<!-- Replace with a 3D render once layout is done: docs/images/render.png -->
+<p align="center">
+  <img src="docs/images/render-top.png" alt="Theoros V1.0, top side" width="45%">
+  <img src="docs/images/render-bottom.png" alt="Theoros V1.0, bottom side with the owl" width="45%">
+</p>
 
 ## Features
 
