@@ -2020,7 +2020,7 @@
 		)
 		(uuid "59b3acc2-7312-401f-b525-8f9311e40cfb")
 	)
-	(text "No capacitor on RESET, no load on TIMEPULSE (SAFEBOOT strap). V_BCKP open in v1."
+	(text "No capacitor on RESET, no load on TIMEPULSE (SAFEBOOT strap). V_BCKP fed from 3V3 via D401/R401, held up by C403."
 		(exclude_from_sim no)
 		(at 25.4 41.91 0)
 		(effects
@@ -2064,7 +2064,7 @@
 		)
 		(uuid "81bff9e8-ebfd-479b-ade7-9e97bac6efce")
 	)
-	(text "GNSS backup option, DNP in v1"
+	(text "GNSS backup: Seiko CPH3225A 11 mF, ~10 min hot start (28 uA backup)"
 		(exclude_from_sim no)
 		(at 96.52 48.26 0)
 		(effects
@@ -2716,7 +2716,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "0586362c-30b6-45d0-8109-df0b035c5e1a")
 		(property "Reference" "R401"
 			(at 104.14 62.23 0)
@@ -4405,7 +4405,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "ab10b00c-98d3-4dc8-b74b-8de5f57a85e7")
 		(property "Reference" "D401"
 			(at 114.3 59.69 0)
@@ -4894,7 +4894,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "d1a951cd-e752-4cc6-a08a-017a4d4fbce7")
 		(property "Reference" "C403"
 			(at 119.38 76.2 0)
@@ -4907,7 +4907,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0.22F 3.3V"
+		(property "Value" "11mF 3.3V"
 			(at 119.38 78.74 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4918,7 +4918,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "theoros:Seiko_CPH3225A"
 			(at 116.84 77.47 0)
 			(hide yes)
 			(show_name no)
@@ -4940,7 +4940,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "Chip EDLC for GNSS backup, polarised: pin 1 = + (V_BCKP)"
 			(at 116.84 77.47 0)
 			(hide yes)
 			(show_name no)
@@ -4951,7 +4951,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Elna"
+		(property "Manufacturer" "Seiko Instruments"
 			(at 116.84 77.47 0)
 			(hide yes)
 			(show_name no)
@@ -4962,7 +4962,7 @@
 				)
 			)
 		)
-		(property "MPN" "DSK-3R3H224U-HL"
+		(property "MPN" "CPH3225A"
 			(at 116.84 77.47 0)
 			(hide yes)
 			(show_name no)

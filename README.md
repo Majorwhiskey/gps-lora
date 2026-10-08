@@ -31,7 +31,7 @@ updates. Designed in KiCad as a 4-layer, fully machine-assembled board
 - Bare SSD1306 128x64 OLED panel on I2C, FPC connector
 - Low-dropout 3.3 V linear regulator (AP7361C)
 - Tag-Connect footprint for UART0 console, EN and GPIO0
-- 4-layer stackup with solid ground plane and impedance-controlled RF and USB traces
+- 4-layer stackup with solid ground plane; RF and USB traces checked at about 48 and 90 ohm on Lion's standard stackup
 
 ## Block diagram
 

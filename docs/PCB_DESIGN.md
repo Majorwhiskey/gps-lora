@@ -67,8 +67,8 @@ at BOM stage from stocked equivalents.
 | F201 | Polyfuse | Littelfuse 1206L075THYR | 0.75A hold, 1.5A trip, 8V. The 1206L075SLYR is only 6V |
 | D201 | VBUS TVS | Littelfuse SMF5.0A | Uni, 5V standoff, 6.4V min breakdown, 9.2V clamp, SOD-123FL |
 | D202 | Holdup diode (DNP) | Schottky, SMA | Select with holdup option |
-| D401 | GNSS backup diode (DNP) | BAT54 class, SOD-323 | |
-| C403 | GNSS backup (DNP) | Elna DSK-3R3H224U-HL | 0.22F 3.3V. **Rated -10 to +60°C only**; needs a project footprint |
+| D401 | GNSS backup diode | BAT54 class, SOD-323 | Charges C403 from 3V3 through R401 (1k) |
+| C403 | GNSS backup | Seiko CPH3225A | 11 mF 3.3 V chip EDLC, 3.2 x 2.5 mm, reflowable, polarised. **Rated -20 to +60°C only** |
 | SW301-303 | Buttons | C&K PTS810 SJM 250 SMTR LFS | Top actuated, 4.2 x 3.2mm |
 
 ## Why the S3
@@ -310,7 +310,7 @@ This matters only for USB-IF certification, which is not a goal for this board.
 |---|---|---|
 | 1, 4, 5, 6, 10, 11, 15, 16, 20 | GND | Ground, with vias |
 | 2 | V_IO | 3V3, tied to VCC |
-| 3 | V_BCKP | Open in v1; backup network footprint, see below |
+| 3 | V_BCKP | Backup network D401/R401/C403 from 3V3, see below |
 | 7 | TIMEPULSE | GPIO15 |
 | 8 | SAFEBOOT_N | Open, with a test pad |
 | 9 | SDA | Open |
@@ -352,15 +352,18 @@ TIMEPULSE is pulled low at start-up, the receiver enters safe boot mode
 
 ### Backup supply
 
-- **V_BCKP is left open in v1** (SAM-IM §4.1.3: "If the hardware backup mode is
-  not used, leave the V_BCKP pin open").
-- Footprint, unfitted in v1, for a backup supercapacitor charged from 3V3
-  through a Schottky diode and resistor. The resistor must stay low, because
-  u-blox warns against high resistance on the V_BCKP line. Backup current is
-  28uA (SAM-DS Table 15). Values to be set at layout.
-- With the backup fitted, a restart within 4 hours is a ~1s hot start. After
-  4 hours the ephemeris has expired and it is a warm start. Without the backup,
-  every start is a 23-29s cold start (SAM-DS Tables 1-2).
+- V_BCKP (1.65-3.6 V, 28 uA in hardware backup mode, SAM-DS Tables 12 and
+  15) is fed from 3V3 through D401 (BAT54) and R401 (1k) and held up by C403,
+  a Seiko CPH3225A 11 mF chip EDLC. The diode drop keeps the charge at about
+  3.1-3.2 V, under the part's 3.3 V limit; Seiko needs no charge-current limit.
+- Hold-up: about 5 uAh usable from 3.1 V down to 1.65 V, so roughly 10 minutes
+  at 28 uA. A restart within that window (a stop, a brief power cut) is a ~1 s
+  hot start; longer outages fall back to a warm or 23-29 s cold start
+  (SAM-DS Tables 1-2). Larger parts (coin cells, 0.22 F coin EDLCs) give hours
+  to days but do not fit beside V_BCKP or cannot be reflowed.
+- Polarity matters: pad 1 is + (the end with the printed + mark), on the
+  V_BCKP side. Rated -20 to +60 °C: in a hot cabin expect faster ageing.
+- C403 sits just outside the 10 mm GNSS keep-out, in line with R401.
 
 ### UART
 
@@ -560,6 +563,9 @@ panel is a v2 item if field use needs it.
 - The FH12 sits beyond the panel's FPC edge, aligned so the FPC enters
   straight. Exact offset from the FH12 datasheet's FPC insertion depth and the
   panel drawing, set at layout.
+- The FH12 is rotated 180 degrees, so the panel (pin 1 on the left in the
+  front view) lands mirrored: panel pin n mates J502 pin 31-n. The schematic
+  shows this with a mirrored J502 symbol.
 - The enclosure window follows the panel position.
 
 ## Boot and reset
@@ -657,11 +663,25 @@ Hierarchical, one root sheet with four sub-sheets:
 | L3 | 3V3 plane, with a VBUS/5V region around the regulator input |
 | L4 (bottom) | Signals, GND pour. No components. |
 
-Obtain Lion Circuits' 1.6mm 4-layer stackup (prepreg and core thicknesses,
-dielectric constant) before routing, and compute the 50 ohm single-ended and
-90 ohm differential widths for L1 over L2 from it with the KiCad calculator.
-Ask whether they offer impedance-controlled fabrication with test coupons; if
-not, the computed widths still apply, with a wider tolerance.
+Lion Circuits' published standard 4-layer 1.6 mm stackup (capabilities page,
+"Stack-Up Details"): 35 um copper / 0.12 mm 2116 prepreg / 1.165 mm NP-140
+core / 0.12 mm 2116 prepreg / 35 um copper. Lion publishes no Dk; NP-140 is
+Dk 3.8-4.4 (Nan Ya data), so impedances below are given for Dk 3.9-4.4, with
+solder mask, from a 2D field solve:
+
+| Trace as routed | Target | Result |
+|---|---|---|
+| LORA_ANT, 0.2 mm, CPWG with 0.25 mm gaps to the L1 pour, 5.3 mm long | 50 ohm | 46.6-48.9 ohm |
+| USB D+/D-, 0.2 mm on L1 or L4 (L4 references the L3 plane, same 0.12 mm) | 45 ohm each | 47.6-50.0 ohm |
+| USB pair where coupled (0.3 mm gap, 4.4 mm of the run) | 90 ohm | 89-93 ohm |
+| USB pair elsewhere (lines > 0.7 mm apart) | 90 ohm | about 95-100 ohm |
+
+All are inside USB's 90 ohm +/-15 % and within a few percent of 50 ohm on a
+trace that is 1/33 of a wavelength at 868 MHz, so the board needs **no
+impedance-controlled order**. For reference, the exact-target widths on this
+stackup are 0.18 mm (50 ohm CPWG, 0.2 mm gap) and 0.18 mm at 0.2 mm spacing
+(90 ohm differential). If Lion's quote shows a different L1-L2 prepreg (for
+example 7628 at 0.21 mm), recompute before ordering: the widths roughly double.
 
 ## Layout rules
 
@@ -713,13 +733,23 @@ pour island on GND reaches the L2 plane.
   between its pad and the LoRa SPI lines. The three LoRa lines NSS, MISO
   and MOSI turn east 1.4 mm higher than before to make room for that via.
 - **USB pair:** full speed only. D+ and D- differ by about 2 mm in length,
-  with 2 and 4 vias. This is acceptable at 12 Mbit/s. Widths are
-  placeholders until the Lion stackup arrives.
+  with 2 and 4 vias. This is acceptable at 12 Mbit/s. Impedance on the
+  Lion stackup is checked in the Stackup section.
 - **Placement changes made during routing:**
   - C306 (DNP) moved beside R305.
-  - C508, C509 and R508 rotated 180 degrees, so VCC, VCOMH and IREF drop
-    straight from J502 and their GND pads share one bus to R510.
-  - R302 moved up 1.2 mm.
+  - R302 moved up 1.2 mm, then 0.4 mm east (J502 rework below).
+- **J502 rework (2026-10-08):** the panel FPC lands mirrored on J502 (panel
+  pin n on J502 pin 31-n, see Display), so the J502 nets were re-mapped in
+  the schematic (J502 symbol mirrored) and the OLED support row re-placed
+  west to east in pad order: C504/C505 (charge pump, horizontal), C506
+  (VBAT), C507 (VDD), R505/R507/R506 (RES/SCL/SDA pull-ups), R508 (IREF),
+  C509 (VCOMH), C508 (VCC). C305 (DNP) is now horizontal at x 93.4.
+  - VBAT reaches the regulator network through an L4 jumper from a via north
+    of pin 25 to TP501.
+  - RES and SDA arrive on L4 at vias north of the connector; SCL on L1.
+  - +3V3 pins 20/22 share one plane via; the GND pins get vias north of the
+    connector or pad-to-pad bridges.
+  - DRC after the rework: same 4 silk-edge warnings as before, 0 unconnected.
 - **In-pad vias:** removed from R205, R505, R204, R507 and U301 pin 7.
   - One remains, on R504.2 (SD_DAT1 pull-up), where no legal spot exists.
     Ask Lion for a filled via there, or accept it on a pull-up.
@@ -797,17 +827,10 @@ Firmware must enforce:
 
 ## Open items
 
-- **J502 pin order is mirrored (found 2026-10-07, not yet fixed).**
-  - On the panel FPC (OLED datasheet 1.4.1/1.4.2), pin 1 is on the left in
-    the front view with the tail pointing down.
-  - The panel lies face up with its tail pointing south into J502, so panel
-    pin 1 lands on J502's west contact. That contact is FH12 contact 30
-    (Hirose drawing EDC3-150229-11; J502 is rotated 180 degrees).
-  - Panel pin n therefore mates J502 pin 31-n, but the schematic connects
-    J502 pin n to panel pin n.
-  - Fix before fab: re-map the J502 nets (pin k carries panel signal 31-k)
-    and rework the OLED support placement and routing, which swaps east and
-    west.
+- J502 pin order: panel pin 1 is on the left in the front view (OLED
+  datasheet drawing 1.4.1) and lands on J502 contact 30, so panel pin n mates
+  J502 pin 31-n. Fixed 2026-10-08 (schematic re-map plus re-placement and
+  re-routing, see Routing notes).
 - TYPE-C-31-M-12: KiCad's `USB_C_Receptacle_HRO_TYPE-C-31-M-12` was checked
   against HRO's recommended layout (LCSC C165948 drawing). Signal pads,
   5.78 mm NPTH and 8.64 mm shell slots match. The power pads sit 0.05 mm
@@ -815,17 +838,12 @@ Firmware must enforce:
 - Confirm Lion Circuits can source SAM-M10Q, RFM95W-868S2, AP7361C-33E-13,
   USB-C receptacle and microSD socket turnkey, or whether any must be
   supplied by us.
-- C403 backup supercap: the selected part is rated only to +60°C, below
-  vehicle cabin extremes. Acceptable while DNP; choose a wider-temperature
-  part (or a rechargeable lithium cell) before fitting it.
+- C403 (Seiko CPH3225A) is rated only to +60°C, below vehicle cabin
+  extremes; it ages faster when hot but does not affect anything else if it
+  fails. Lion Circuits listed it out of stock (2026-10-08): order it from
+  DigiKey (8692444) and supply it, or ask Lion to source it.
 - PTS810: the KiCad footprint matches C&K's recommended layout exactly
   (1.05 x 0.65 mm pads, 3.1/5.2 and 1.5/2.8 mm spans). OK.
-- C403: project footprint `theoros:Elna_DSK_6.8x2.1mm_TerminalH` was created
-  from the Elna land pattern (+ pad 5.0 x 2.0, - pad 4.0 x 1.7, 8.3 mm
-  apart). It is not placed. The only slot next to V_BCKP (between V_BCKP at
-  x 21.5 and PPS at x 28.1, outside the 10 mm GNSS keep-out) is 6.6 mm wide
-  and the part needs 7.4 mm. Options: a smaller backup part (e.g. Elna
-  DSK 4.8 mm), or re-routing PPS east to widen the slot.
 - Panel operating range is -30 to +70°C; enclosure design must keep it out of
   direct sun.
 - Set the radio to 866MHz, not the 868MHz library default. India's delicensed

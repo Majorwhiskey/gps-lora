@@ -39,13 +39,13 @@ manufacturer's website and save it here under the file name given.
 |---|---|---|
 | 19 | Tag-Connect TC2030-NL | TC2030 footprint drawing (Tag-Connect) |
 
-## Holdup and backup options (DNP in v1, needed before layout)
+## Holdup and backup options (holdup DNP in v1; GNSS backup fitted)
 
 | # | Part | Document |
 |---|---|---|
 | 20 | Schottky diode, ≤0.45V at 600mA | Datasheet |
 | 21 | 2200uF holdup capacitor | Datasheet (footprint size) |
-| 22 | GNSS backup supercap: Elna DSK-3R3H224U-HL | DSK series datasheet |
+| 22 | GNSS backup EDLC: Seiko CPH3225A | Seiko MicroBattery catalogue (CPH3225A, p.20-21) |
 
 ## Added during schematic capture
 

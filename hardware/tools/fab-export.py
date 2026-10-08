@@ -352,7 +352,7 @@ Revision: {rev}    generated {datetime.now():%Y-%m-%d %H:%M}
 Board
   Size:            {pcbnew.ToMM(bbox.GetWidth()):.2f} x {pcbnew.ToMM(bbox.GetHeight()):.2f} mm, rectangular
   Layers:          4 (L1 F.Cu signals, L2 solid GND plane, L3 3V3 plane with +5V island, L4 B.Cu signals)
-  Thickness:       {spec.thickness} mm, FR-4 (fab standard 4-layer stackup; impedance widths pending)
+  Thickness:       {spec.thickness} mm, FR-4, Lion standard 4L stackup (2116 0.12 mm L1-L2); no impedance control needed
   Copper:          {spec.copper} oz outer (inner per fab standard)
   Finish:          {spec.finish}
   Solder mask:     {spec.mask} both sides, silkscreen {spec.silk} both sides

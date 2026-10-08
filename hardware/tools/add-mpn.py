@@ -36,7 +36,7 @@ BY_VALUE = {
     ("100uF", "C_1210"): ("Murata", "GRM32ER61A107ME20L"),      # 10V X5R
     ("2.2uF", "C_0603"): ("Murata", "GRM188R61E225KA12D"),      # 25V X5R, OLED VCC (>=16V)
     ("4.7uF", "C_0603"): ("TDK", "C1608X7R1C475K080AC"),        # 16V X7R, OLED VCOMH (X7R per panel)
-    ("0.22F 3.3V", ""): ("Elna", "DSK-3R3H224U-HL"),
+    ("11mF 3.3V", ""): ("Seiko Instruments", "CPH3225A"),
     # semiconductors / modules / connectors (docs/PCB_DESIGN.md "Selected parts")
     ("SMF5.0A", ""): ("Littelfuse", "SMF5.0A"),
     ("Green", "LED_0603"): ("Lite-On", "LTST-C191KGKT"),
