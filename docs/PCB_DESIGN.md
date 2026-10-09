@@ -715,12 +715,17 @@ example 7628 at 0.21 mm), recompute before ordering: the widths roughly double.
 14. Three fiducials on the top side, asymmetric. M2 mounting holes, plated,
     connected to GND. The enclosure model follows the board, not the reverse.
 15. Silkscreen: pin 1 on every polarised part. Top: `THEOROS ${REVISION}`
-    (follows the title block) and ΘΕΩΡΟΣ above the GNSS module, "ANTENNA
-    BEFORE TX" pointing at J401, and a line under the OLED panel that is only
-    visible with the panel removed. Bottom: an owl made as a solder-mask
-    opening over the GND pour (gold with ENIG; every via inside stays tented)
-    and the motto "ΟΡΩ ΚΑΙ ΑΓΓΕΛΛΩ / I SEE AND I REPORT". Item 13 applies to
-    components only; the bottom side carries artwork but no parts.
+    (follows the title block) and ಥಿಯೋರೋಸ್ (the name in Kannada) above the
+    GNSS module, "ANTENNA BEFORE TX" pointing at J401, and a line under the
+    OLED panel that is only visible with the panel removed. Bottom: an owl
+    made as a solder-mask opening over the GND pour (gold with ENIG; every via
+    inside stays tented) and the motto "ನೋಡುವೆ, ವರದಿ ಮಾಡುವೆ / I SEE AND I
+    REPORT". The Kannada lines use Noto Sans Kannada Bold; KiCad stores the
+    shaped outlines in the board file (render_cache), so they plot the same
+    on machines without the font. ತಿಳಿಸುವೆ was avoided: its ಳಿ glyph has a
+    hairline join that fails the silkscreen stroke check at any size.
+    Item 13 applies to components only; the bottom side carries artwork but
+    no parts.
 
 ### Routing notes (rev V1.0, routing completed 2026-10-07)
 
